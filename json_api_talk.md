@@ -1,6 +1,6 @@
 slidenumbers: false
 slidecount:true
-autoscale: true
+autoscale: false
 build-lists: true
 
 [.slidenumbers: false]
@@ -18,8 +18,7 @@ build-lists: true
 ^
 - Idea initiated at DaWanda
 - taking Ruby monoliths apart into micro services
-- build 1st micro service with JSON:API
-- share the knowledge in an internal talk
+- build 1st micro service with json-api specs
 
 ---
 ## Problem
@@ -31,6 +30,7 @@ We don't have a shared understanding about the structure.
 - snake case / camel case
 - plural / singular
 - endpoint design
+- associations (links or embedding)
 - resource nesting
 - partial / complete update
 - filters, sorting, meta info?
@@ -61,6 +61,16 @@ How __a server__ should respond to those requests.
 "By following __shared conventions__, you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application."
 _— jsonapi.org_
 
+
+^
+- a group of people (Yahuda Katz, Steven Klabnik)
+
+---
+
+## HTTP Request & Response Header
+
+`Content-Type: application/vnd.api+json`
+
 ---
 ## A Simple Resource Object
 
@@ -81,7 +91,23 @@ User(id: integer, name: string)
 ```
 
 ^
-A Resource Object: ID, TYPE, (ATTRIBUTES, ...)
+* `data`: the root
+* a Resource Object: ID, TYPE, (ATTRIBUTES, ...)
+
+---
+[.autoscale: false]
+
+`POST /users`
+
+```json
+{
+  "data": {
+    "type": "users",
+    "attributes": { "name": "Yehuda Katz" }
+  }
+}
+```
+
 ---
 [.autoscale: false]
 
@@ -103,6 +129,26 @@ A Resource Object: ID, TYPE, (ATTRIBUTES, ...)
   ]
 }
 ```
+
+---
+[.autoscale: false]
+
+`PUT /users/2`
+
+```json
+{
+  "data": {
+    "type": "users",
+    "id": "2",
+    "attributes": { "name": "Dan Gebhardt" }
+  }
+}
+```
+
+---
+[.autoscale: false]
+
+`DELETE /users/2`
 
 ---
 ## 1:n Relationship
@@ -140,17 +186,109 @@ Article(
 }
 ```
 
+---
+[.autoscale: false]
+
+`GET /articles/2`
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "articles",
+    "attributes": {
+      "title": "Intro to JSON API",
+      "content": "Lorem Opossum ..."
+    },
+    "relationships": {
+      "user": {
+        "data": { "id": "1", "type": "users" }
+      }
+    }
+  }
+}
+```
+
+---
+[.autoscale: false]
+
+`GET /users/1?include=articles`
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem Opossum..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Lorem Opossum..." }
+      }
+    ]
+  }
+}
+```
+
 ^
-A Resource Identifier Object: ID, TYPE
+Side Loading
 
 ---
+[.autoscale: false]
 
-## Compound Documents
+`GET /users/1?include=articles.title`
 
-`GET /users/1?included`
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API" }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding" }
+      }
+    ]
+  }
+}
+```
+
+^
+Compound Documents
 
 ---
-## Authentication
+## Versioning
+
+JSON API is stricly additive
 
 ---
 ## Authorization
@@ -159,9 +297,7 @@ A Resource Identifier Object: ID, TYPE
 ## Testing
 
 ---
-## Documentation
-
----
+[.autoscale: true]
 ## History
 
 - __2013-05-03__ Yehuda Katz released initial draft
@@ -179,7 +315,43 @@ A Resource Identifier Object: ID, TYPE
 - @jsonapi: <300 tweets
 
 ---
-## Sources
+## References
+
+- __Talk__ ["The JSON API Spec" by Marco Otto-Witte](https://www.youtube.com/watch?v=RSv-Yv3cgPg)
 
 ---
-## JSON:API vs GraphQL
+## json:api vs GraphQL
+
+- GraphQL is protocol agnostic
+- JSON API leverages HTTP functionalities, such as:
+
+---
+## json:api vs GraphQL
+
+```
+GET /users/1` HTTP/1.1
+Accept: application/vnd.api+json
+```
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/vnd.api+json
+ETag: "bf3291afe28105e12b9ff5941a3cf6d7"
+```
+
+---
+## json:api vs GraphQL
+
+```
+GET /users/1` HTTP/1.1
+Accept: application/vnd.api+json
+If-None-Match: "bf3291afe28105e12b9ff5941a3cf6d7"
+```
+
+```
+HTTP/1.1 305 Not Modified
+```
+
+^
+* HTTP caching mechanism
+* with HTTP/2: more parallel requests, server push, ...
