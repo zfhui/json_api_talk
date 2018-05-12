@@ -74,7 +74,23 @@ _— jsonapi.org_
 ---
 ## A Simple Resource Object
 
-```ruby
+```Ruby
+User(id: integer, name: string)
+```
+
+---
+## A Simple Resource Object
+
+```Ruby
+User(id: integer, name: string)
+```
+
+`GET /users/1`
+
+---
+## A Simple Resource Object
+
+```Ruby
 User(id: integer, name: string)
 ```
 
@@ -83,21 +99,80 @@ User(id: integer, name: string)
 ```json
 {
   "data": {
-    "type": "users",
     "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" }
+  }
+}
+```
+
+---
+## A Simple Resource Object
+
+```Ruby
+User(id: integer, name: string)
+```
+
+`GET /users/1`
+
+```json, [.highlight: 2, 6]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
     "attributes": { "name": "Steve Klabnik" }
   }
 }
 ```
 
 ^
-* resource object
-* `data`: the root
-* a identifier objects: ID, TYPE, (ATTRIBUTES, ...)
+`data`: the root
 
 ---
-[.autoscale: false]
+## A Simple Resource Object
 
+```Ruby
+User(id: integer, name: string)
+```
+
+`GET /users/1`
+
+```json, [.highlight: 3-4]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" }
+  }
+}
+```
+
+^
+mandatory: identifier objects: ID, TYPE
+
+---
+## A Simple Resource Object
+
+```Ruby
+User(id: integer, name: string)
+```
+
+`GET /users/1`
+
+```json, [.highlight: 5]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" }
+  }
+}
+```
+
+^
+optional
+
+---
 `POST /users`
 
 ```json
@@ -110,21 +185,81 @@ User(id: integer, name: string)
 ```
 
 ---
-[.autoscale: false]
-
 `GET /users`
 
 ```json
 {
   "data": [
     {
-      "type": "users",
       "id": "1",
+      "type": "users",
       "attributes": { "name": "Steve Klabnik" }
     },
     {
-      "type": "users",
       "id": "2",
+      "type": "users",
+      "attributes": { "name": "Yehuda Katz" }
+    }
+  ]
+}
+```
+
+---
+`GET /users`
+
+```json, [.highlight: 2, 13]
+{
+  "data": [
+    {
+      "id": "1",
+      "type": "users",
+      "attributes": { "name": "Steve Klabnik" }
+    },
+    {
+      "id": "2",
+      "type": "users",
+      "attributes": { "name": "Yehuda Katz" }
+    }
+  ]
+}
+```
+
+---
+`GET /users`
+
+```json,, [.highlight: 3-7]
+{
+  "data": [
+    {
+      "id": "1",
+      "type": "users",
+      "attributes": { "name": "Steve Klabnik" }
+    },
+    {
+      "id": "2",
+      "type": "users",
+      "attributes": { "name": "Yehuda Katz" }
+    }
+  ]
+}
+```
+
+---
+[.autoscale: false]
+
+`GET /users`
+
+```json,, [.highlight: 8-12]
+{
+  "data": [
+    {
+      "id": "1",
+      "type": "users",
+      "attributes": { "name": "Steve Klabnik" }
+    },
+    {
+      "id": "2",
+      "type": "users",
       "attributes": { "name": "Yehuda Katz" }
     }
   ]
@@ -139,8 +274,8 @@ User(id: integer, name: string)
 ```json
 {
   "data": {
-    "type": "users",
     "id": "2",
+    "type": "users",
     "attributes": { "name": "Dan Gebhardt" }
   }
 }
