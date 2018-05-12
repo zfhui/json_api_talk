@@ -17,7 +17,7 @@ build-lists: true
 
 ^
 - Idea initiated at DaWanda
-- taking Ruby monoliths apart into micro services
+- taking ruby monoliths apart into micro services
 - build 1st micro service with json-api specs
 
 ---
@@ -74,14 +74,14 @@ _— jsonapi.org_
 ---
 ## A Simple Resource Object
 
-```Ruby
+```ruby
 User(id: integer, name: string)
 ```
 
 ---
 ## A Simple Resource Object
 
-```Ruby
+```ruby
 User(id: integer, name: string)
 ```
 
@@ -90,7 +90,7 @@ User(id: integer, name: string)
 ---
 ## A Simple Resource Object
 
-```Ruby
+```ruby
 User(id: integer, name: string)
 ```
 
@@ -109,7 +109,7 @@ User(id: integer, name: string)
 ---
 ## A Simple Resource Object
 
-```Ruby
+```ruby
 User(id: integer, name: string)
 ```
 
@@ -131,7 +131,7 @@ User(id: integer, name: string)
 ---
 ## A Simple Resource Object
 
-```Ruby
+```ruby
 User(id: integer, name: string)
 ```
 
@@ -153,7 +153,7 @@ mandatory: identifier objects: ID, TYPE
 ---
 ## A Simple Resource Object
 
-```Ruby
+```ruby
 User(id: integer, name: string)
 ```
 
@@ -227,7 +227,7 @@ optional
 ---
 `GET /users`
 
-```json,, [.highlight: 3-7]
+```json, [.highlight: 3-7]
 {
   "data": [
     {
@@ -245,11 +245,9 @@ optional
 ```
 
 ---
-[.autoscale: false]
-
 `GET /users`
 
-```json,, [.highlight: 8-12]
+```json, [.highlight: 8-12]
 {
   "data": [
     {
@@ -267,8 +265,6 @@ optional
 ```
 
 ---
-[.autoscale: false]
-
 `PATCH /users/2`
 
 ```json
@@ -282,8 +278,6 @@ optional
 ```
 
 ---
-[.autoscale: false]
-
 `DELETE /users/2`
 
 ---
@@ -299,9 +293,8 @@ Article(
   user_id: integer
 )
 ```
----
-[.autoscale: false]
 
+---
 `GET /users/1`
 
 ```json
@@ -323,18 +316,16 @@ Article(
 ```
 
 ---
-[.autoscale: false]
-
 `GET /articles/2`
 
 ```json
 {
   "data": {
-    "id": "1",
+    "id": "2",
     "type": "articles",
     "attributes": {
       "title": "Intro to JSON API",
-      "content": "Lorem Opossum ..."
+      "content": "Lorem opossum ..."
     },
     "relationships": {
       "user": {
@@ -346,8 +337,40 @@ Article(
 ```
 
 ---
-[.autoscale: false]
+`GET /articles/5`
 
+```json
+{
+  "data": {
+    "id": "5",
+    "type": "articles",
+    "attributes": {
+      "title": "Anti-Bikeshedding",
+      "content": "Marsupial fur trees ..."
+    },
+    "relationships": {
+      "user": {
+        "data": { "id": "1", "type": "users" }
+      }
+    }
+  }
+}
+```
+
+---
+[.autoscale: true]
+## Compound Documents
+
+- __Instead of 3 requests:__
+- `GET /users/1`
+- `GET /articles/2` __and__ `GET /articles/5`
+- __We can do 1 request:__
+- `GET /users/1?include=articles`
+
+^
+- to reduce number of requests
+
+---
 `GET /users/1?include=articles`
 
 ```json
@@ -368,25 +391,185 @@ Article(
       {
         "id": "2",
         "type": "articles",
-        "attributes": { "title": "Intro to JSON API", "content": "Lorem Opossum..." }
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
       },
       {
         "id": "5",
         "type": "articles",
-        "attributes": { "title": "Anti-Bikeshedding", "content": "Lorem Opossum..." }
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
       }
     ]
   }
 }
 ```
 
-^
-Side Loading
+---
+`GET /users/1?include=articles`
+
+```json, [.highlight: 2-13]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
+      }
+    ]
+  }
+}
+```
 
 ---
-[.autoscale: false]
+`GET /users/1?include=articles`
 
-`GET /users/1?include=articles.title`
+```json, [.highlight: 14-26]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
+      }
+    ]
+  }
+}
+```
+
+---
+`GET /users/1?include=articles`
+
+```json, [.highlight: 14, 26]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
+      }
+    ]
+  }
+}
+```
+
+---
+`GET /users/1?include=articles`
+
+```json, [.highlight: 15-19]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
+      }
+    ]
+  }
+}
+```
+
+---
+`GET /users/1?include=articles`
+
+```json, [.highlight: 20-24]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
+      }
+    ]
+  }
+}
+```
+
+---
+## [fit] `GET /users/1?include=articles.title`
 
 ```json
 {
@@ -418,13 +601,7 @@ Side Loading
 }
 ```
 
-^
-Compound Documents
-
 ---
-
-[.autoscale: false]
-
 `POST /users/1`
 
 ```json
@@ -450,9 +627,6 @@ Compound Documents
 * but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
 
 ---
-
-[.autoscale: false]
-
 `POST /users/1/articles/new`
 
 ```json
@@ -471,8 +645,6 @@ Compound Documents
 ```
 
 ---
-[autoscale: false]
-
 `PATCH /users/1`
 
 ```json
@@ -504,10 +676,21 @@ Replaces all article relationships for the user.
 
 ---
 
-## Implementation
+## __Implementation__
+## [fit] _with_ JSONAPI::Resources
 
 ---
+[.autoscale: true]
+## Create your new Rails API
 
+- `rails new my-new-json-api --api`
+- `rails g scaffold user name:string`
+- `rails g scaffold article title:string content:text`
+- `rails db:setup`
+- Add `gem "jsonapi-resource"` to your Gemfile
+- `bundle install`
+
+---
 ## gem "jsonapi-resources"
 
 ```shell
@@ -515,7 +698,7 @@ rails g jsonapi:resource user
   create  app/resources/user_resource.rb
 ```
 
-```Ruby
+```ruby
 class UserResource < JSONAPI::Resource; end
 ```
 
@@ -524,13 +707,34 @@ rails g jsonapi:resource article
   create  app/resources/user_resource.rb
 ```
 
-```Ruby
+```ruby
 class ArticleResource < JSONAPI::Resource; end
 ```
 
 ---
+`GET /users/1`
 
-```Ruby
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steven Klabnik" }
+  }
+}
+```
+
+```ruby
+# app/resources/user_resource.rb
+
+class UserResource < JSONAPI::Resource
+  attribute :name
+end
+```
+
+---
+
+```ruby
 # config/routes.rb
 
 
