@@ -9,11 +9,11 @@ build-lists: true
 # [fit] { json:api }
 
 ---
-![left](fei-placeholder.jpg)
+![right](fei.jpg)
 
-## _Zhuo-Fei Hui_
-## __@zfhui__
-## Blinkist
+# [fit] _Zhuo-Fei Hui_
+# __@zfhui__
+# Blinkist
 
 ^
 - Idea initiated at DaWanda
@@ -91,8 +91,9 @@ User(id: integer, name: string)
 ```
 
 ^
+* resource object
 * `data`: the root
-* a Resource Object: ID, TYPE, (ATTRIBUTES, ...)
+* a identifier objects: ID, TYPE, (ATTRIBUTES, ...)
 
 ---
 [.autoscale: false]
@@ -133,7 +134,7 @@ User(id: integer, name: string)
 ---
 [.autoscale: false]
 
-`PUT /users/2`
+`PATCH /users/2`
 
 ```json
 {
@@ -286,6 +287,129 @@ Side Loading
 Compound Documents
 
 ---
+
+[.autoscale: false]
+
+`POST /users/1`
+
+```json
+{
+  "data": {
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+
+^
+* when referred articles already exist
+* creating more than one resource with one POST request is currently not suported
+* but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
+
+---
+
+[.autoscale: false]
+
+`POST /users/1/articles/new`
+
+```json
+{
+  "data": [
+    {
+      "type": "articles",
+      "attributes": { "title": "Intro to JSON API", "content": "Lorem Opossum..." }
+    },
+    {
+      "type": "articles",
+      "attributes": { "title": "Intro to JSON API", "content": "Lorem Opossum..." }
+    }
+  ]
+}
+```
+
+---
+[autoscale: false]
+
+`PATCH /users/1`
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "3", "type": "articles" },
+          { "id": "6", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+
+^
+Replaces all article relationships for the user.
+
+---
+
+## More things ...
+
+... error objects, meta objects, links objects, pagination, versioning, ...
+
+---
+
+## Implementation
+
+---
+
+## gem "jsonapi-resources"
+
+```shell
+rails g jsonapi:resource user
+  create  app/resources/user_resource.rb
+```
+
+```Ruby
+class UserResource < JSONAPI::Resource; end
+```
+
+```
+rails g jsonapi:resource article
+  create  app/resources/user_resource.rb
+```
+
+```Ruby
+class ArticleResource < JSONAPI::Resource; end
+```
+
+---
+
+```Ruby
+# config/routes.rb
+
+
+Rails.application.routes.draw do
+  # resources :articles
+  # resources :users
+
+  jsonapi_resources :articles
+  jsonapi_resources :users
+end
+```
+
+---
+
 ## Versioning
 
 JSON API is stricly additive
