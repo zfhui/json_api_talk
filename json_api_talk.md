@@ -16,14 +16,15 @@ build-lists: true
 # Blinkist
 
 ^
-- Idea initiated at DaWanda
+- idea initiated at DaWanda
 - taking ruby monoliths apart into micro services
 - build 1st micro service with json-api specs
+- that project should become a template for other micro services
 
 ---
 ## Problem
 
-**RESTful APIs using JSON**
+__RESTful APIs using JSON__
 We don't have a shared understanding about the structure.
 
 ^
@@ -43,9 +44,22 @@ We don't have a shared understanding about the structure.
 
 ## Problem
 
-**Bikeshedding**
+__Bikeshedding__
 "Futile investment of time and energy in discussion of marginal technical issues."
+
 _— Wiktionary_
+
+<!-- ---
+## Your Anti-Bikeshedding Tool
+
+![inline, 42%](jsonapi_org.png)
+ -->
+---
+
+## { json:api }
+### _A Specification for Building APIs in JSON_
+
+_<br/>_
 
 ---
 ## { json:api }
@@ -53,23 +67,41 @@ _— Wiktionary_
 
 How __a client__ should request for resources to be fetched or modified.
 
+---
+## { json:api }
+### _A Specification for Building APIs in JSON_
+
+How __a client__ should request for resources to be fetched or modified.
 How __a server__ should respond to those requests.
 
 ---
 ## { json:api }
 
-"By following __shared conventions__, you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application."
+__Shared Conventions__
+"By following (it), you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application."
 _— jsonapi.org_
-
 
 ^
 - a group of people (Yahuda Katz, Steven Klabnik)
 
 ---
+[.autoscale: true]
+## Media Type
+`application/vnd.api+json`
 
-## HTTP Request & Response Header
+__Request Header__
 
-`Content-Type: application/vnd.api+json`
+```http
+GET /users/1 HTTP/1.1
+Accept: application/vnd.api+json
+```
+
+__Response Header__
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/vnd.api+json
+```
 
 ---
 ## A Simple Resource Object
@@ -79,7 +111,7 @@ User(id: integer, name: string)
 ```
 
 ---
-## A Simple Resource Object
+## Fetching a User
 
 ```ruby
 User(id: integer, name: string)
@@ -88,7 +120,7 @@ User(id: integer, name: string)
 `GET /users/1`
 
 ---
-## A Simple Resource Object
+## Fetching a User
 
 ```ruby
 User(id: integer, name: string)
@@ -107,7 +139,7 @@ User(id: integer, name: string)
 ```
 
 ---
-## A Simple Resource Object
+## Fetching a User
 
 ```ruby
 User(id: integer, name: string)
@@ -129,7 +161,7 @@ User(id: integer, name: string)
 `data`: the root
 
 ---
-## A Simple Resource Object
+## Fetching a User
 
 ```ruby
 User(id: integer, name: string)
@@ -151,7 +183,7 @@ User(id: integer, name: string)
 mandatory: identifier objects: ID, TYPE
 
 ---
-## A Simple Resource Object
+## Fetching a User
 
 ```ruby
 User(id: integer, name: string)
@@ -173,6 +205,13 @@ User(id: integer, name: string)
 optional
 
 ---
+## Creating a User
+
+`POST /users`
+
+---
+## Creating a User
+
 `POST /users`
 
 ```json
@@ -185,6 +224,54 @@ optional
 ```
 
 ---
+## Creating a User
+
+`POST /users`
+
+```json, [.highlight: 2, 5]
+{
+  "data": {
+    "type": "users",
+    "attributes": { "name": "Yehuda Katz" }
+  }
+}
+```
+
+---
+## Creating a User
+
+`POST /users`
+
+```json, [.highlight: 3]
+{
+  "data": {
+    "type": "users",
+    "attributes": { "name": "Yehuda Katz" }
+  }
+}
+```
+
+---
+## Creating a User
+
+`POST /users`
+
+```json, [.highlight: 4]
+{
+  "data": {
+    "type": "users",
+    "attributes": { "name": "Yehuda Katz" }
+  }
+}
+```
+
+---
+## Get a List of Users
+
+`GET /users`
+
+---
+
 `GET /users`
 
 ```json
@@ -265,6 +352,8 @@ optional
 ```
 
 ---
+## Updating a User
+
 `PATCH /users/2`
 
 ```json
@@ -278,7 +367,27 @@ optional
 ```
 
 ---
+## Updating a User
+
+`PATCH /users/2`
+
+```json, [.highlight: 3]
+{
+  "data": {
+    "id": "2",
+    "type": "users",
+    "attributes": { "name": "Dan Gebhardt" }
+  }
+}
+```
+
+---
+## Deleting a User
+
 `DELETE /users/2`
+
+^
+We get a 204 back.
 
 ---
 ## 1:n Relationship
@@ -293,6 +402,11 @@ Article(
   user_id: integer
 )
 ```
+
+---
+## Fetching a User
+
+`GET /users/1`
 
 ---
 `GET /users/1`
@@ -314,6 +428,112 @@ Article(
   }
 }
 ```
+
+---
+`GET /users/1`
+
+```json, [.highlight: 2-5]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+
+---
+`GET /users/1`
+
+```json, [.highlight: 6-13]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+
+---
+`GET /users/1`
+
+```json, [.highlight: 6, 13]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+---
+`GET /users/1`
+
+```json, [.highlight: 7, 12]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+---
+`GET /users/1`
+
+```json, [.highlight: 8-11]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+
+^
+If we are interested in the articles, we can GET each article respectively
 
 ---
 `GET /articles/2`
@@ -439,7 +659,7 @@ Article(
 ---
 `GET /users/1?include=articles`
 
-```json, [.highlight: 14-26]
+```json, [.highlight: 14-25]
 {
   "data": {
     "id": "1",
@@ -472,7 +692,7 @@ Article(
 ---
 `GET /users/1?include=articles`
 
-```json, [.highlight: 14, 26]
+```json, [.highlight: 14, 25]
 {
   "data": {
     "id": "1",
@@ -567,11 +787,52 @@ Article(
   }
 }
 ```
+^
+- if you are not interested in all of articles attributes
+- e.g. show a list of user's articles = titles
+- JSON API allows you to only include titles
 
 ---
-## [fit] `GET /users/1?include=articles.title`
+`GET /users/1?include=articles`
 
-```json
+```json, [.highlight: 18, 23]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    },
+    "included": [
+      {
+        "id": "2",
+        "type": "articles",
+        "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." }
+      },
+      {
+        "id": "5",
+        "type": "articles",
+        "attributes": { "title": "Anti-Bikeshedding", "content": "Marsupial fur trees ..." }
+      }
+    ]
+  }
+}
+```
+^
+- if you are not interested in all of articles attributes
+- e.g. show a list of user's articles = titles
+- JSON API allows you to only include titles
+
+---
+`GET /users/1?include=articles.title`
+
+```json, [.highlight: 18, 23]
 {
   "data": {
     "id": "1",
@@ -602,9 +863,14 @@ Article(
 ```
 
 ---
+## Creating a User
+
 `POST /users/1`
 
-```json
+---
+`POST /users/1`
+
+```json, [.highlight: 5-12]
 {
   "data": {
     "type": "users",
