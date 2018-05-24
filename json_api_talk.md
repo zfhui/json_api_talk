@@ -59,7 +59,7 @@ _— Wiktionary_
 ## { json:api }
 ### _A Specification for Building APIs in JSON_
 
-_<br/>_
+<br/>
 
 ---
 ## { json:api }
@@ -87,7 +87,8 @@ _— jsonapi.org_
 ---
 [.autoscale: true]
 ## Media Type
-`application/vnd.api+json`
+
+`Content-Type: application/vnd.api+json`
 
 __Request Header__
 
@@ -102,6 +103,11 @@ __Response Header__
 HTTP/1.1 200 OK
 Content-Type: application/vnd.api+json
 ```
+
+---
+## A Simple Resource Object
+
+<br/>
 
 ---
 ## A Simple Resource Object
@@ -266,7 +272,7 @@ optional
 ```
 
 ---
-## Get a List of Users
+## Getting a List of Users
 
 `GET /users`
 
@@ -380,6 +386,9 @@ optional
   }
 }
 ```
+
+^
+specify the ID twice!
 
 ---
 ## Deleting a User
@@ -863,12 +872,26 @@ If we are interested in the articles, we can GET each article respectively
 ```
 
 ---
-## Creating a User
+## Fetching User's Relationships
 
-`POST /users/1`
+`GET /users/1/relationships/articles`
+
+```json
+{
+  "data": [
+    { "id": "2", "type": "articles" },
+    { "id": "5", "type": "articles" }
+  ]
+}
+```
 
 ---
-`POST /users/1`
+## Creating a User with Relationships
+
+`POST /users`
+
+---
+`POST /users`
 
 ```json, [.highlight: 5-12]
 {
@@ -893,32 +916,39 @@ If we are interested in the articles, we can GET each article respectively
 * but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
 
 ---
-`POST /users/1/articles/new`
+
+## Adding Relationships to a User
+
+`POST /users/1/relationships/articles`
 
 ```json
 {
   "data": [
-    {
-      "type": "articles",
-      "attributes": { "title": "Intro to JSON API", "content": "Lorem Opossum..." }
-    },
-    {
-      "type": "articles",
-      "attributes": { "title": "Intro to JSON API", "content": "Lorem Opossum..." }
-    }
+    { "id": "4", "type": "articles" },
+    { "id": "6", "type": "articles" }
   ]
 }
 ```
 
 ---
-`PATCH /users/1`
+## Updating a User
 
-```json
+`PUT /users/1`
+
+#☝️
+
+__"relationships" field replaces relationships completely!__
+
+---
+
+☝️ `PUT /users/1`
+
+```json, [.highlight: 6-13]
 {
   "data": {
     "id": "1",
     "type": "users",
-    "attributes": { "name": "Steve Klabnik" },
+    "attributes": { "name": "Dan Gebhardt" },
     "relationships": {
       "articles": {
         "data": [
@@ -930,15 +960,168 @@ If we are interested in the articles, we can GET each article respectively
   }
 }
 ```
+---
+
+☝️ `PUT /users/1`
+
+```json, [.highlight: 6-13]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Dan Gebhardt" },
+    "relationships": {
+      "articles": {
+        "data": []
+      }
+    }
+  }
+}
+```
 
 ^
-Replaces all article relationships for the user.
+Empties all relationships to articles.
 
 ---
 
-## More things ...
+`PUT /users/1`
 
-... error objects, meta objects, links objects, pagination, versioning, ...
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Dan Gebhardt" }
+  }
+}
+```
+
+---
+## Updating To-One Relationship
+
+`PUT /articles/5/relationships/user`
+
+---
+## Replace To-One Relationship
+
+`PUT /articles/5/relationships/user`
+
+```json
+{
+  "data": { "id": "3", "type": "users" }
+}
+```
+
+```http
+HTTP/1.1 204 No Content
+```
+
+---
+## Remove To-One Relationship
+
+`PUT /articles/5/relationships/user`
+
+
+```json
+{
+  "data": null
+}
+```
+
+```http
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/vnd.api+json
+```
+---
+## Updating To-Many Relationship
+
+`PUT /users/1/relationships/articles`
+
+---
+## Replace To-Many Relationships
+
+`PUT /users/1/relationships/articles`
+
+```json
+{
+  "data": { "id": "3", "type": "articles" },
+  "data": { "id": "7", "type": "articles" },
+}
+```
+
+```http
+HTTP/1.1 403 Forbidden
+```
+
+^
+```json
+{
+  "errors": [
+    {
+      "title": "Complete replacement forbidden",
+      "detail": "Complete replacement forbidden for this relationship",
+      "code": "FORBIDDEN",
+      "status": "403"
+    }
+  ]
+}
+```
+
+---
+## Remove To-Many Relationship
+
+`PUT /users/1/relationships/articles`
+
+
+```json
+{
+  "data": []
+}
+```
+
+```http
+HTTP/1.1 403 Forbidden
+```
+
+^
+```
+{
+  "errors": [
+    {
+      "title": "Complete replacement forbidden",
+      "detail": "Complete replacement forbidden for this relationship",
+      "code": "FORBIDDEN",
+      "status": "403"
+    }
+  ]
+}
+```
+
+---
+## Deleting a User's Relationships
+
+`DELETE /users/1/relationships/articles`
+
+```json
+{
+  "data": [
+    { "id": "2", "type": "articles"},
+    { "id": "5", "type": "articles"},
+    { "id": "9", "type": "articles"}
+  ]
+}
+```
+
+---
+[.autoscale: true]
+## Things we didn't discuss
+
+* __-__ error objects, meta objects, links objects, pagination, versioning, ...
+* __-__ n:m relationships
+* __-__ creating a nested resource
+* __-__ ...
+
+^
 
 ---
 
