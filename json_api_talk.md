@@ -916,21 +916,6 @@ If we are interested in the articles, we can GET each article respectively
 * but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
 
 ---
-
-## Adding Relationships to a User
-
-`POST /users/1/relationships/articles`
-
-```json
-{
-  "data": [
-    { "id": "4", "type": "articles" },
-    { "id": "6", "type": "articles" }
-  ]
-}
-```
-
----
 ## Updating a User
 
 `PUT /users/1`
@@ -1033,27 +1018,35 @@ HTTP/1.1 422 Unprocessable Entity
 Content-Type: application/vnd.api+json
 ```
 ---
+
 ## Updating To-Many Relationship
 
 `PUT /users/1/relationships/articles`
 
+#☝️
+
+__Replaces relationships completely!__
+
 ---
+
 ## Replace To-Many Relationships
 
-`PUT /users/1/relationships/articles`
+☝️ `PUT /users/1/relationships/articles`
 
 ```json
 {
-  "data": { "id": "3", "type": "articles" },
-  "data": { "id": "7", "type": "articles" },
+  "data": [
+    { "id": "3", "type": "articles" },
+    { "id": "7", "type": "articles" }
+  ]
 }
 ```
 
-```http
+^
+Depends on server side implementation:
+```html
 HTTP/1.1 403 Forbidden
 ```
-
-^
 ```json
 {
   "errors": [
@@ -1068,9 +1061,24 @@ HTTP/1.1 403 Forbidden
 ```
 
 ---
+
+## Adding Relationships to a User
+
+`POST /users/1/relationships/articles`
+
+```json
+{
+  "data": [
+    { "id": "3", "type": "articles" },
+    { "id": "7", "type": "articles" }
+  ]
+}
+```
+
+---
 ## Remove To-Many Relationship
 
-`PUT /users/1/relationships/articles`
+☝️ `PUT /users/1/relationships/articles`
 
 
 ```json
@@ -1079,12 +1087,12 @@ HTTP/1.1 403 Forbidden
 }
 ```
 
+^
+Depends on server side implementation:
 ```http
 HTTP/1.1 403 Forbidden
 ```
-
-^
-```
+```json
 {
   "errors": [
     {
@@ -1106,8 +1114,7 @@ HTTP/1.1 403 Forbidden
 {
   "data": [
     { "id": "2", "type": "articles"},
-    { "id": "5", "type": "articles"},
-    { "id": "9", "type": "articles"}
+    { "id": "5", "type": "articles"}
   ]
 }
 ```
@@ -1116,17 +1123,27 @@ HTTP/1.1 403 Forbidden
 [.autoscale: true]
 ## Things we didn't discuss
 
-* __-__ error objects, meta objects, links objects, pagination, versioning, ...
+* __-__ error objects, meta objects, links objects
 * __-__ n:m relationships
-* __-__ creating a nested resource
+* __-__ pagination, sorting, filtering, sparse fieldset
+* __-__ creating nested resources
 * __-__ ...
 
 ^
 
 ---
+[.autoscale: true]
+## [fit] __Implementation__ _with_ JSONAPI::Resources
 
-## __Implementation__
-## [fit] _with_ JSONAPI::Resources
+* __-__ most compliant with { json:api }
+* __-__ maintained by Larry Gebhardt
+* __-__ relies heavily on Active Record Models
+* __-__ I worked with it. 😅
+
+^
+- brother of Dan Gebhardt - primary author & maintainer of { json:api }
+- Active Record Models: functionalities/logic seems obvious/familiar
+- but at the same time inflexible, lots of overwriting
 
 ---
 [.autoscale: true]
@@ -1140,7 +1157,22 @@ HTTP/1.1 403 Forbidden
 - `bundle install`
 
 ---
-## gem "jsonapi-resources"
+## Generate JSONAPI::Resources
+
+```shell
+rails g jsonapi:resource user
+```
+
+---
+## Generate JSONAPI::Resources
+
+```shell
+rails g jsonapi:resource user
+  create  app/resources/user_resource.rb
+```
+
+---
+## Generate JSONAPI::Resources
 
 ```shell
 rails g jsonapi:resource user
@@ -1151,9 +1183,60 @@ rails g jsonapi:resource user
 class UserResource < JSONAPI::Resource; end
 ```
 
-```
-rails g jsonapi:resource article
+---
+## Generate JSONAPI::Resources
+
+```shell
+rails g jsonapi:resource user
   create  app/resources/user_resource.rb
+```
+
+```ruby
+class UserResource < JSONAPI::Resource; end
+```
+
+<br/>
+
+```shell
+rails g jsonapi:resource article
+```
+
+---
+## Generate JSONAPI::Resources
+
+```shell
+rails g jsonapi:resource user
+  create  app/resources/user_resource.rb
+```
+
+```ruby
+class UserResource < JSONAPI::Resource; end
+```
+
+<br/>
+
+```shell
+rails g jsonapi:resource article
+  create  app/resources/article_resource.rb
+```
+
+---
+## Generate JSONAPI::Resources
+
+```shell
+rails g jsonapi:resource user
+  create  app/resources/user_resource.rb
+```
+
+```ruby
+class UserResource < JSONAPI::Resource; end
+```
+
+<br/>
+
+```shell
+rails g jsonapi:resource article
+  create  app/resources/article_resource.rb
 ```
 
 ```ruby
@@ -1161,18 +1244,15 @@ class ArticleResource < JSONAPI::Resource; end
 ```
 
 ---
-`GET /users/1`
+## UserResource
 
-```json
-{
-  "data": {
-    "id": "1",
-    "type": "users",
-    "attributes": { "name": "Steven Klabnik" }
-  }
-}
+```ruby
+# app/resources/user_resource.rb
+
+class UserResource < JSONAPI::Resource; end
 ```
 
+---
 ```ruby
 # app/resources/user_resource.rb
 
@@ -1182,15 +1262,96 @@ end
 ```
 
 ---
+```ruby, [.highlight: 4]
+# app/resources/user_resource.rb
 
+class UserResource < JSONAPI::Resource
+  attribute :name
+end
+```
+
+`GET /users/1`
+
+```json, [.highlight: 5]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steven Klabnik" }
+  }
+}
+```
+
+---
+
+`GET /users/1`
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "2", "type": "articles" },
+          { "id": "5", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+```ruby
+class UserResource < JSONAPI::Resource
+  attribute :name
+  has_many :articles, always_include_linkage_data: true
+end
+```
+
+---
+`GET /articles/1`
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "articles",
+    "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." },
+    "relationships": {
+      "author": {
+        "data": { "id": "1", "type": "users" }
+      }
+    }
+  }
+}
+```
+
+```ruby
+# app/resources/article_resource.rb
+
+class ArticleResource < JSONAPI::Resource
+  attributes :title, :content
+  has_one :author, always_include_linkage_data: true, foreign_key: :user_id
+end
+```
+
+---
 ```ruby
 # config/routes.rb
 
+Rails.application.routes.draw do
+  resources :articles
+  resources :users
+end
+```
+
+---
+```ruby
+# config/routes.rb
 
 Rails.application.routes.draw do
-  # resources :articles
-  # resources :users
-
   jsonapi_resources :articles
   jsonapi_resources :users
 end
@@ -1198,15 +1359,46 @@ end
 
 ---
 
-## Versioning
+```ruby
+# app/resources/user_resource.rb
+
+class UserResource < JSONAPI::Resource
+  attributes :name, :first_name, :last_name
+
+  has_many :articles, always_include_linkage_data: true
+
+  def name
+    "#{@model.first_name} #{@model.last_name}"
+  end
+
+  def fetchable_fields
+    %i(name articles)
+  end
+
+  def self.creatable_fields(_context)
+    %i(first_name last_name articles)
+  end
+
+  def self.updatable_fields(_context)
+    %i(first_name last_name articles)
+  end
+end
+```
+
+---
+[.autoscale: true]
+## Where to go from here?
+
+- __Tests:__ [jsonapi-rspec](https://github.com/jsonapi-rb/jsonapi-rspec)
+- __Authorization:__ [jsonapi-authorization](https://github.com/venuu/jsonapi-authorization)
+- __Client:__ [jsonapi-client](https://github.com/jsmestad/jsonapi-consumer)
+- __Only Readable API__:
+  - [fast_jsonapi](https://github.com/Netflix/fast_jsonapi)
+  - [active_model_serializers](active_model_serializers)
+
+---
 
 JSON API is stricly additive
-
----
-## Authorization
-
----
-## Testing
 
 ---
 [.autoscale: true]
