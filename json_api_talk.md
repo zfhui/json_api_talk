@@ -7,6 +7,15 @@ build-lists: true
 [.slidecount: false]
 # [fit] _An Introduction to_
 # [fit] { json:api }
+
+^
+- Greeting!
+- idea of this talk came to me while I was working on a project at my previous company DaWanda
+- this talk was meant as an internal talk
+- taking ruby monoliths apart into micro services
+- that project should become a template for other micro services
+- build 1st micro service with json-api specs
+
 ---
 ![right](fei.jpg)
 
@@ -15,10 +24,24 @@ build-lists: true
 # Blinkist
 
 ^
-- idea initiated at DaWanda
-- taking ruby monoliths apart into micro services
-- build 1st micro service with json-api specs
-- that project should become a template for other micro services
+- Fei
+- China /  Germany
+- came to Berlin study CS at TU Berlin
+- since exactly one month
+- part of the awesome Ruby community for ~4 yrs
+- happy to be here, give my first talk
+
+---
+## Problem
+
+__RESTful APIs using JSON__
+
+^
+- endpoint design
+- plural / singular
+- resource nesting
+- partial / complete update
+- filters, sorting params
 
 ---
 ## Problem
@@ -27,13 +50,7 @@ __RESTful APIs using JSON__
 We don't have a shared understanding about the structure.
 
 ^
-- snake case / camel case
-- plural / singular
-- endpoint design
-- associations (links or embedding)
-- resource nesting
-- partial / complete update
-- filters, sorting, meta info?
+The point here is: ...
 - variations of the same thing
 - new client for every API
 - BIKESHEDDING
@@ -48,6 +65,46 @@ __Bikeshedding__
 
 _— Wiktionary_
 
+^
+- instead of concentrating on more crucial things (e.g. logic, architecture, performance)
+- we spent lots of time discussion whether the key should use snake_case or camelCase
+
+---
+## Solution
+
+<br/>
+
+# [fit] { json:api }
+
+<br/>
+
+---
+## Solution
+
+<br/>
+
+# [fit] { "json": "api" }
+
+<br/>
+
+---
+[.autoscale: true]
+## History
+
+- __2013-05-03__ Yehuda Katz released initial the draft
+- __2013-07-21__ media type `application/vnd.api+json` registration with IANA completed
+- __2014-07-05__ `v1.0rc` released
+- __2015-05-29__ `v1.0stable` released
+- __Today__ `v1.1` still in draft
+
+^
+- Katz was building a generic Ember API client
+- IANA: International Assigned Numbers Authority
+- 3 yrs old specification
+- maintainers: Steve Klabnik / Yehuda Katz / Dan Gebhard
+- all have backgrounds in Rails
+- @jsonapi: <300 tweets
+
 <!-- ---
 ## Your Anti-Bikeshedding Tool
 
@@ -55,33 +112,31 @@ _— Wiktionary_
  -->
 
 ---
-## { json:api }
+## jsonapi.org
 ### _A Specification for Building APIs in JSON_
 
 <br/>
 
 ---
-## { json:api }
+## jsonapi.org
 ### _A Specification for Building APIs in JSON_
 
 How __a client__ should request for resources to be fetched or modified.
 
 ---
-## { json:api }
+## jsonapi.org
 ### _A Specification for Building APIs in JSON_
 
 How __a client__ should request for resources to be fetched or modified.
 How __a server__ should respond to those requests.
 
 ---
-## { json:api }
+## jsonapi.org
 
-__Shared Conventions__
-"By following (it), you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application."
-_— jsonapi.org_
+"By following __Shared Conventions__, you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application."
 
 ^
-- a group of people (Yahuda Katz, Steven Klabnik)
+- the promiss
 
 ---
 [.autoscale: true]
@@ -1395,25 +1450,9 @@ You've created your 1st JSON API!
 
 ---
 [.autoscale: true]
-## History
-
-- __2013-05-03__ Yehuda Katz released initial draft
-- __2013-07-21__ media type registration with IANA completed
-- __2014-07-05__ `v1.0rc` released
-- __2015-05-29__ `v1.0stable` released
-- __Today__ `v1.1` still in draft
-
-^
-- Katz was building a generic Ember API client
-- IANA: International Assigned Numbers Authority
-- 3 yrs old specification
-- maintainers: Steve Klabnik / Yehuda Katz / Dan Gebhard
-- all have backgrounds in Rails
-- @jsonapi: <300 tweets
-
----
 ## References
 
+- __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
 - __Talk__ ["The JSON API Spec" by Marco Otto-Witte](https://www.youtube.com/watch?v=RSv-Yv3cgPg)
 
 ---
@@ -1445,6 +1484,17 @@ end
 
 ^
 Final version of UserResource
+
+---
+## Yehuda Katz
+
+__{ json:api }__ is a wire protocol for incrementally fetching and updating a graph over HTTP.
+
+^
+- wire protocol: it includes both a format for resources and a specification of operation that you can do on those resource
+- incrementally: clients can fetch data as they need it at the appropriate granularity.
+- graph structure: because data are linked together in a well-defined way
+- HTTP: it uses HTTP protocol, including it's caching semantics as its backbone
 
 ---
 ## json:api vs GraphQL
