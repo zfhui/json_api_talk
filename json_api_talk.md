@@ -7,7 +7,6 @@ build-lists: true
 [.slidecount: false]
 # [fit] _An Introduction to_
 # [fit] { json:api }
-
 ---
 ![right](fei.jpg)
 
@@ -54,8 +53,8 @@ _— Wiktionary_
 
 ![inline, 42%](jsonapi_org.png)
  -->
----
 
+---
 ## { json:api }
 ### _A Specification for Building APIs in JSON_
 
@@ -1144,6 +1143,8 @@ HTTP/1.1 403 Forbidden
 - brother of Dan Gebhardt - primary author & maintainer of { json:api }
 - Active Record Models: functionalities/logic seems obvious/familiar
 - but at the same time inflexible, lots of overwriting
+- you know what to expect, before writing a line of code
+- the clients can already start mocking
 
 ---
 [.autoscale: true]
@@ -1159,46 +1160,21 @@ HTTP/1.1 403 Forbidden
 ---
 ## Generate JSONAPI::Resources
 
-```shell
-rails g jsonapi:resource user
-```
-
----
-## Generate JSONAPI::Resources
-
-```shell
-rails g jsonapi:resource user
-  create  app/resources/user_resource.rb
-```
-
----
-## Generate JSONAPI::Resources
-
-```shell
-rails g jsonapi:resource user
-  create  app/resources/user_resource.rb
-```
-
-```ruby
-class UserResource < JSONAPI::Resource; end
-```
-
----
-## Generate JSONAPI::Resources
-
-```shell
-rails g jsonapi:resource user
-  create  app/resources/user_resource.rb
-```
-
-```ruby
-class UserResource < JSONAPI::Resource; end
-```
-
 <br/>
 
+---
+## Generate JSONAPI::Resources
+
 ```shell
-rails g jsonapi:resource article
+rails g jsonapi:resource user
+```
+
+---
+## Generate JSONAPI::Resources
+
+```shell
+rails g jsonapi:resource user
+  create  app/resources/user_resource.rb
 ```
 
 ---
@@ -1213,15 +1189,8 @@ rails g jsonapi:resource user
 class UserResource < JSONAPI::Resource; end
 ```
 
-<br/>
-
-```shell
-rails g jsonapi:resource article
-  create  app/resources/article_resource.rb
-```
-
 ---
-## Generate JSONAPI::Resources
+<!-- ## Generate JSONAPI::Resources
 
 ```shell
 rails g jsonapi:resource user
@@ -1243,101 +1212,76 @@ rails g jsonapi:resource article
 class ArticleResource < JSONAPI::Resource; end
 ```
 
----
-## UserResource
+--- -->
+## <br/>
 
 ```ruby
 # app/resources/user_resource.rb
 
-class UserResource < JSONAPI::Resource; end
+class UserResource < JSONAPI::Resource
+
+
+
+end
 ```
 
 ---
+## <br/>
+
 ```ruby
 # app/resources/user_resource.rb
 
 class UserResource < JSONAPI::Resource
   attribute :name
+
+
 end
 ```
 
 ---
-```ruby, [.highlight: 4]
+## <br/>
+
+```ruby
 # app/resources/user_resource.rb
 
 class UserResource < JSONAPI::Resource
   attribute :name
-end
-```
-
-`GET /users/1`
-
-```json, [.highlight: 5]
-{
-  "data": {
-    "id": "1",
-    "type": "users",
-    "attributes": { "name": "Steven Klabnik" }
-  }
-}
-```
-
----
-
-`GET /users/1`
-
-```json
-{
-  "data": {
-    "id": "1",
-    "type": "users",
-    "attributes": { "name": "Steve Klabnik" },
-    "relationships": {
-      "articles": {
-        "data": [
-          { "id": "2", "type": "articles" },
-          { "id": "5", "type": "articles" }
-        ]
-      }
-    }
-  }
-}
-```
-```ruby
-class UserResource < JSONAPI::Resource
-  attribute :name
-  has_many :articles, always_include_linkage_data: true
+  has_many :articles,
+           always_include_linkage_data: true
 end
 ```
 
 ---
-`GET /articles/1`
-
-```json
-{
-  "data": {
-    "id": "1",
-    "type": "articles",
-    "attributes": { "title": "Intro to JSON API", "content": "Lorem opossum ..." },
-    "relationships": {
-      "author": {
-        "data": { "id": "1", "type": "users" }
-      }
-    }
-  }
-}
-```
+## <br/>
 
 ```ruby
 # app/resources/article_resource.rb
 
 class ArticleResource < JSONAPI::Resource
   attributes :title, :content
-  has_one :author, always_include_linkage_data: true, foreign_key: :user_id
+  has_one :author,
+          always_include_linkage_data: true,
+          foreign_key: :user_id
 end
 ```
 
 ---
+## <br/>
+
+```ruby, [.highlight: 5, 7]
+# app/resources/article_resource.rb
+
+class ArticleResource < JSONAPI::Resource
+  attributes :title, :content
+  has_one :author,
+          always_include_linkage_data: true,
+          foreign_key: :user_id
+end
+```
+
+---
+## <br/>
+
 ```ruby
 # config/routes.rb
 
@@ -1348,7 +1292,21 @@ end
 ```
 
 ---
-```ruby
+## <br/>
+
+```ruby, [.highlight: 4,5]
+# config/routes.rb
+
+Rails.application.routes.draw do
+  resources :articles
+  resources :users
+end
+```
+
+---
+## <br/>
+
+```ruby, [.highlight: 4,5]
 # config/routes.rb
 
 Rails.application.routes.draw do
@@ -1358,7 +1316,107 @@ end
 ```
 
 ---
+## <br/>
 
+```ruby
+# app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::API
+
+end
+```
+---
+## <br/>
+
+```ruby
+# app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::API
+  include JSONAPI::ActsAsResourceController
+end
+```
+---
+## <br/>
+
+```ruby
+# app/controllers/users_controller.rb
+
+class UsersController < ApplicationController
+  def index
+    ...
+  def create
+    ...
+  def update
+    ...
+    ...
+end
+```
+
+---
+## <br/>
+
+```ruby
+# app/controllers/users_controller.rb
+
+class UsersController < ApplicationController; end
+```
+
+---
+## <br/>
+
+```ruby
+# app/controllers/users_controller.rb
+
+class UsersController < ApplicationController; end
+```
+
+<br/>
+
+```ruby
+# app/controllers/articles_controller.rb
+
+class ArticlesController < ApplicationController; end
+```
+
+---
+
+You've created your 1st JSON API!
+
+---
+[.autoscale: true]
+## Where to go from here?
+
+- __Tests:__ [jsonapi-rspec](https://github.com/jsonapi-rb/jsonapi-rspec)
+- __Authorization:__ [jsonapi-authorization](https://github.com/venuu/jsonapi-authorization)
+- __Client:__ [jsonapi-client](https://github.com/jsmestad/jsonapi-consumer)
+- __Only Readable API__:
+  - [fast_jsonapi](https://github.com/Netflix/fast_jsonapi)
+  - [active_model_serializers](active_model_serializers)
+
+---
+[.autoscale: true]
+## History
+
+- __2013-05-03__ Yehuda Katz released initial draft
+- __2013-07-21__ media type registration with IANA completed
+- __2014-07-05__ `v1.0rc` released
+- __2015-05-29__ `v1.0stable` released
+- __Today__ `v1.1` still in draft
+
+^
+- Katz was building a generic Ember API client
+- IANA: International Assigned Numbers Authority
+- 3 yrs old specification
+- maintainers: Steve Klabnik / Yehuda Katz / Dan Gebhard
+- all have backgrounds in Rails
+- @jsonapi: <300 tweets
+
+---
+## References
+
+- __Talk__ ["The JSON API Spec" by Marco Otto-Witte](https://www.youtube.com/watch?v=RSv-Yv3cgPg)
+
+---
 ```ruby
 # app/resources/user_resource.rb
 
@@ -1385,43 +1443,8 @@ class UserResource < JSONAPI::Resource
 end
 ```
 
----
-[.autoscale: true]
-## Where to go from here?
-
-- __Tests:__ [jsonapi-rspec](https://github.com/jsonapi-rb/jsonapi-rspec)
-- __Authorization:__ [jsonapi-authorization](https://github.com/venuu/jsonapi-authorization)
-- __Client:__ [jsonapi-client](https://github.com/jsmestad/jsonapi-consumer)
-- __Only Readable API__:
-  - [fast_jsonapi](https://github.com/Netflix/fast_jsonapi)
-  - [active_model_serializers](active_model_serializers)
-
----
-
-JSON API is stricly additive
-
----
-[.autoscale: true]
-## History
-
-- __2013-05-03__ Yehuda Katz released initial draft
-- __2013-07-21__ media type registration with IANA completed
-- __2014-07-05__ `v1.0rc` released
-- __2015-05-29__ `v1.0stable` released
-- __Today__ `v1.1` still in draft
-
 ^
-- Katz was building a generic Ember API client
-- IANA: International Assigned Numbers Authority
-- 3 yrs old specification
-- maintainers: Steve Klabnik / Yehuda Katz / Dan Gebhard
-- all have backgrounds in Rails
-- @jsonapi: <300 tweets
-
----
-## References
-
-- __Talk__ ["The JSON API Spec" by Marco Otto-Witte](https://www.youtube.com/watch?v=RSv-Yv3cgPg)
+Final version of UserResource
 
 ---
 ## json:api vs GraphQL
