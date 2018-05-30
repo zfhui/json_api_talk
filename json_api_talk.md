@@ -53,7 +53,9 @@ We don't have a shared understanding about the structure.
 The point here is: ...
 - variations of the same thing
 - new client for every API
-- BIKESHEDDING
+- different clients prefer different response structures
+  - iOS: good with fewer requests and large responses
+  - Android: several requests with small responses
 
 ---
 ![](bikeshed.jpg)
@@ -138,20 +140,35 @@ How __a server__ should respond to those requests.
 ^
 - the promiss
 
+
 ---
-[.autoscale: true]
-## Media Type
+## Header
 
-`Content-Type: application/vnd.api+json`
+<br/>
 
-__Request Header__
+---
+## Header
+
+__Request__
 
 ```http
 GET /users/1 HTTP/1.1
 Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json
 ```
 
-__Response Header__
+---
+## Header
+
+__Request__
+
+```http
+GET /users/1 HTTP/1.1
+Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json
+```
+
+__Response__
 
 ```http
 HTTP/1.1 200 OK
@@ -1441,19 +1458,35 @@ You've created your 1st JSON API!
 [.autoscale: true]
 ## Where to go from here?
 
-- __Tests:__ [jsonapi-rspec](https://github.com/jsonapi-rb/jsonapi-rspec)
-- __Authorization:__ [jsonapi-authorization](https://github.com/venuu/jsonapi-authorization)
-- __Client:__ [jsonapi-client](https://github.com/jsmestad/jsonapi-consumer)
-- __Only Readable API__:
-  - [fast_jsonapi](https://github.com/Netflix/fast_jsonapi)
-  - [active_model_serializers](active_model_serializers)
+- __Only Readable API__: [`fast_jsonapi`](https://github.com/Netflix/fast_jsonapi) /  [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
+- __Tests:__ [`jsonapi-rspec`](https://github.com/jsonapi-rb/jsonapi-rspec)
+- __Authorization:__ [`jsonapi-authorization`](https://github.com/venuu/jsonapi-authorization)
+- __Client:__ [`json-api-client`](https://github.com/JsonApiClient/json_api_client) / [`jsonapi-consumer`](https://github.com/jsmestad/jsonapi-consumer)
+
+---
+
+## jsonapi-suite.org
+
+__"a collection of ruby libraries that facilitate the jsonapi.org specification."__
+
+- __-__ serialiser and deserialiser for { json:api }
+- __-__ spec helpers
+- __-__ helpers for swagger documentation
 
 ---
 [.autoscale: true]
 ## References
 
+- __Talk__ [JSON API: convention driver API design](https://youtu.be/FpS_E90-6O8) by Steve Klabnik
+- __Talk__ [Past, Present and Future of JSON API](https://youtu.be/Foi54om6oGQ) by Steve Klabnik
 - __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
-- __Talk__ ["The JSON API Spec" by Marco Otto-Witte](https://www.youtube.com/watch?v=RSv-Yv3cgPg)
+- __Talk__ ["The JSON API Spec"](https://youtu.be/RSv-Yv3cgPg) by Marco Otto-Witte
+
+- __Talk__ ["Pragmatic JSON API Design"](https://www.youtube.com/watch?v=3jBJOga4e2Y&index=4&list=PLNLa8ejyRhUt3TjSjvr2T4rE1kGbIfJc1&t=0s) by Jeremiah Lee
+
+---
+
+# Thanks_!_
 
 ---
 ```ruby
@@ -1486,6 +1519,12 @@ end
 Final version of UserResource
 
 ---
+## Well scoped response data
+
+- one endpoint to serve different client needs, without overloading it
+- data reflects the underlying data structure, instead of being loosely related or even arbitraryly merged
+
+---
 ## Yehuda Katz
 
 __{ json:api }__ is a wire protocol for incrementally fetching and updating a graph over HTTP.
@@ -1493,8 +1532,17 @@ __{ json:api }__ is a wire protocol for incrementally fetching and updating a gr
 ^
 - wire protocol: it includes both a format for resources and a specification of operation that you can do on those resource
 - incrementally: clients can fetch data as they need it at the appropriate granularity.
+- fetching and updating, which means there is a defined way to modify resources that you fetched
 - graph structure: because data are linked together in a well-defined way
-- HTTP: it uses HTTP protocol, including it's caching semantics as its backbone
+- HTTP: it uses HTTP protocol, including it's caching semantics, as its backbone
+
+[.footer: https://twitter.com/wycats/status/925847356532125696]
+
+---
+## Caching
+
+- well-defined resources can improve chacheability
+- { json:api } leverages on HTTP's build in mechanism
 
 ---
 ## json:api vs GraphQL
@@ -1531,4 +1579,4 @@ HTTP/1.1 305 Not Modified
 
 ^
 * HTTP caching mechanism
-* with HTTP/2: more parallel requests, server push, ...
+* with HTTP/2: more parallel requests, server push, etc.
