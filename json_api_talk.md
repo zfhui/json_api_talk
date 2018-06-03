@@ -28,7 +28,7 @@ build-lists: true
 - Fei
 - China /  Germany
 - Came to Berlin study CS at TU Berlin
-- I currently work at Blinkist
+- I currently work at Blinkist at a backend developer
 
 ---
 ![](bikeshed.jpg)
@@ -38,7 +38,7 @@ __RESTful APIs using JSON__
 
 ^
 - I maintaine several APIs during my daily work,
-- I assume that this is what you do, too.
+- I assume that's something most of you do too.
 - modern APIs are RESTful APIs using JSON
 - = we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
 - PROBLEM: This setup not tell us that much about HOW to design our APIs
@@ -54,17 +54,17 @@ __RESTful APIs using JSON__
 > We don't have a shared understanding about the structure.
 
 ^
-- If you give several individual developers the same data structure and some use cases and ask each of them to build an API, everyone will come back with a different solution.
-^
-- If you put them then into the same room to discuss their solutions, they will tell you why prefer
+When we start building a new API, we discuss a bunch of things:
 - camel Case over snake case
 - plural / singular
 - endpoint design
 - resource nesting
-- filters, sorting params
+- pass in params for filtering, sorting, pagination, ...
+
 ^
-- instead of concentrating on more crucial things (e.g. logic, architecture, performance)
-- we spent lots of time discussing the same questions over and over again
+- Bike-Shedding
+- instead of concentrating on more crucial things (e.g. feature, performance, architecture)
+- we wast lots of time discussing these very marginal questions
 
 <!-- ---
 ![](bikeshed.jpg)
@@ -85,17 +85,20 @@ __Overloading__
 > Different clients prefer different structures.
 
 ^
-- iOS: good with fewer requests and large responses
+- sometimes we start building our API for one client
+- then we have to adapt it for other clients
 - Android: several requests with small responses
+- iOS: good with fewer requests and large responses
 - When we start to cater for all of these needs
-- we often times overload the API, it grows and reflects less and less the underlying data structure
+- we often times also start to overload the endpoints
+- it grows and reflects less and less the underlying data structure
 - This is bad!
 
 ^
 __You've probably experienced this already:__
+- clients get data, they don't need
 - one change in data structure -> bunch seemingly unrelated endpoints breaks
 - caching and invalidating cache becomes more complicated
-- clients get data, they don't need
 
 ---
 ## Solution
@@ -119,7 +122,6 @@ __You've probably experienced this already:__
 
 --- -->
 ## { json:api }
-### _Shared Conventions_
 
 <br/>
 
@@ -128,7 +130,6 @@ if you go to the website of the specification: ...
 
 ---
 ## { json:api }
-### _Shared Conventions_
 
 How __a client__ should request for resources to be fetched or modified.
 
@@ -146,18 +147,16 @@ How __a server__ should respond to those requests.
 
 --- -->
 [.autoscale: true]
-## jsonapi.org
+## { json:api }
 
 - __2013-05-03__ Yehuda Katz released initial the draft
-- __2013-07-21__ media type _application/vnd.api+json_ registration with IANA completed
+- __2013-07-21__ registration of the media type: _application/vnd.api+json_
 - __2015-05-29__ `v1.0stable` released
 - __Today__ `v1.1` still in draft
 
 ^
-- Katz was building a generic Ember API client
-- IANA: International Assigned Numbers Authority
-- 3 yrs old specification
-- maintainers: Steve Klabnik / Yehuda Katz / Dan Gebhard
+- Katz met Klabnik at the RailsConf
+- client + server can use the media type in their respective request/response header, to tell each other that they are using JSON API
 
 <!-- ---
 ## Header
@@ -199,6 +198,7 @@ Content-Type: application/vnd.api+json
 <br/>
 
 ---
+[.autoscale: true]
 ## A Simple Resource Object
 
 ```ruby
@@ -208,20 +208,36 @@ User(id: integer, name: string)
 ---
 ## Fetching a User
 
-```ruby
-User(id: integer, name: string)
+```http
+GET /users/1 HTTP/1.1
+Accept: application/vnd.api+json
 ```
-
-`GET /users/1`
 
 ---
 ## Fetching a User
 
-```ruby
-User(id: integer, name: string)
+```http
+GET /users/1 HTTP/1.1
+Accept: application/vnd.api+json
 ```
 
-`GET /users/1`
+```http
+HTTP/1.1 200 OK
+Content-Type: application/vnd.api+json,
+```
+
+---
+## Fetching a User
+
+```http
+GET /users/1 HTTP/1.1
+Accept: application/vnd.api+json
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/vnd.api+json,
+```
 
 ```json
 {
@@ -234,13 +250,18 @@ User(id: integer, name: string)
 ```
 
 ---
-## Fetching a User
 
-```ruby
-User(id: integer, name: string)
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Steve Klabnik" }
+  }
+}
 ```
 
-`GET /users/1`
+---
 
 ```json, [.highlight: 2, 6]
 {
@@ -256,13 +277,6 @@ User(id: integer, name: string)
 `data`: the root
 
 ---
-## Fetching a User
-
-```ruby
-User(id: integer, name: string)
-```
-
-`GET /users/1`
 
 ```json, [.highlight: 3-4]
 {
@@ -278,13 +292,6 @@ User(id: integer, name: string)
 mandatory: identifier objects: ID, TYPE
 
 ---
-## Fetching a User
-
-```ruby
-User(id: integer, name: string)
-```
-
-`GET /users/1`
 
 ```json, [.highlight: 5]
 {
@@ -302,12 +309,25 @@ optional
 ---
 ## Creating a User
 
-`POST /users`
+<br/>
 
 ---
 ## Creating a User
 
-`POST /users`
+```http
+POST /users HTTP/1.1
+Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json
+```
+
+---
+## Creating a User
+
+```http
+POST /users HTTP/1.1
+Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json,
+```
 
 ```json
 {
@@ -321,7 +341,11 @@ optional
 ---
 ## Creating a User
 
-`POST /users`
+```http
+POST /users HTTP/1.1
+Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json,
+```
 
 ```json, [.highlight: 2, 5]
 {
@@ -335,7 +359,11 @@ optional
 ---
 ## Creating a User
 
-`POST /users`
+```http
+POST /users HTTP/1.1
+Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json,
+```
 
 ```json, [.highlight: 3]
 {
@@ -349,7 +377,11 @@ optional
 ---
 ## Creating a User
 
-`POST /users`
+```http
+POST /users HTTP/1.1
+Accept: application/vnd.api+json
+Content-Type: application/vnd.api+json,
+```
 
 ```json, [.highlight: 4]
 {
@@ -371,7 +403,7 @@ optional
 ---
 ## Updating a User
 
-`PATCH /users/2`
+`PATCH /users/2`,
 
 ```json
 {
@@ -388,7 +420,7 @@ optional
 - id, type and attributes
 
 ---
-## Getting a List of Users
+## Fetching a List of Users
 
 `GET /users`
 
@@ -492,13 +524,10 @@ and we get this payload
 ---
 ## Deleting a User
 
-`DELETE /users/2`
-
-^
-We get a 204 back.
+`DELETE /users/1`
 
 ---
-## 1:n Relationship
+## Relationships
 
 <br/>
 
@@ -506,14 +535,14 @@ We get a 204 back.
 - next thing I wanna show you is how on-to-many relationship looks like
 
 ---
-## 1:n Relationship
+## Relationships
 
 ```ruby
 User(id: integer, name: string)
 ```
 
 ---
-## 1:n Relationship
+## Relationships
 
 ```ruby
 User(id: integer, name: string)
@@ -742,19 +771,12 @@ Article(
 ``` -->
 
 ---
-## <br/>
+## Compound Documents
 
-__3 requests__  | <br/>
-----------------|----------------------------------
-GET /users/1    |
-                |
-GET /articles/2 |
-GET /articles/5 |
-                |
-                |
+<br/>
 
 ---
-## <br/>
+## Compound Documents
 
 __n+1 requests__ | <br/>
 -----------------|----------------------------------
@@ -771,23 +793,11 @@ Remember what I told you at the beginning about the different preferences of iOS
 
 
 ---
-## <br/>
+## Compound Documents
 
 __n+1 requests__ | __1 request__
 -----------------|----------------------------------
 GET /users/1     |
-                 |
-GET /articles/2  |
-GET /articles/5  |
-...              |
-                 |
-
----
-## <br/>
-
-__n+1 requests__ | __1 request__
------------------|----------------------------------
-GET /users/1     | GET /users/1_?include=articles_
                  |
 GET /articles/2  |
 GET /articles/5  |
@@ -1109,8 +1119,10 @@ GET /articles/5  |
 }
 ```
 
----
-## Creating a User with Relationships
+^
+Skipping the POST request, because looks similar to Updating.
+
+<!-- ## Creating a User with Relationships
 
 `POST /users`
 
@@ -1158,10 +1170,10 @@ GET /articles/5  |
 ```
 
 ^
-- ... by sending the relationship info along your POST request
+- ... by sending the relationship info along your POST request -->
 
 ---
-## ☝️ Updating a User with Relationships
+## Updating a User with Relationships
 
 `PATCH /users/1`
 
@@ -1186,7 +1198,7 @@ GET /articles/5  |
 }
 ```
 ^
-"relationships" field replaces relationships completely!
+A caveat, if you use "relationships" field in your request's body, it replaces a user's relationships completely!
 
 ---
 ☝️ `PATCH /users/1`
@@ -1415,12 +1427,12 @@ HTTP/1.1 403 Forbidden
 ---
 ## Manipulating a User's Relationships
 
- __POST__ and __DELETE__ on relationship links:
+ __POST__ and __DELETE__ on __Relationship Links__:
 
 ---
 ## Manipulating a User's Relationships
 
- __POST__ and __DELETE__ on relationship links:
+ __POST__ and __DELETE__ on __Relationship Links__:
 
 </br>
 
@@ -1453,14 +1465,21 @@ HTTP/1.1 403 Forbidden
 you don't replace existing relationships!
 
 ---
-## Deleting a User's Relationships
+## Adding Relationships to a User
 
-<br/>
+`POST /users/1/relationships/articles`
 
----
-## Deleting a User's Relationships
+```json, [.highlight: 3, 4]
+{
+  "data": [
+    { "id": "3", "type": "articles" },
+    { "id": "7", "type": "articles" }
+  ]
+}
+```
 
-`DELETE /users/1/relationships/articles`
+^
+you don't replace existing relationships!
 
 ---
 ## Deleting a User's Relationships
@@ -1471,7 +1490,7 @@ you don't replace existing relationships!
 {
   "data": [
     { "id": "3", "type": "articles" },
-    { "id": "7", "type": "articles"}
+    { "id": "7", "type": "articles" }
   ]
 }
 ```
@@ -1481,7 +1500,10 @@ you don't replace existing relationships!
 ![](hamster_band.gif)
 
 ^
+That was a lot!
 You've earned yourself a small break!
+^
+Drink some water!
 
 ---
 [.autoscale: true]
@@ -1508,8 +1530,8 @@ You've earned yourself a small break!
 
 ^
 - let the client choose the granularity & how
-- reflects the underlying data structure, instead of being loosely related or even arbitrarily merged
 - one endpoint: without overloading it
+- reflects the underlying data structure, instead of being loosely related or even arbitrarily merged
 - well-defined resources can improve cacheability
 - HTTP: caching mechanism
 
@@ -1523,38 +1545,17 @@ You've earned yourself a small break!
   - 💓 [`jsonapi_resources`](http://jsonapi-resources.com/)
   - 🦄 [`jsonapi_suite`](https://jsonapi-suite.org)
 
----
-[.autoscale: true]
-## jsonapi-resources
-
-* __-__ most compliant with { json:api }
-* __-__ maintained by Larry Gebhardt
-* __-__ relies heavily on Active Record Models
+^
+jsonapi-resources:
+* most compliant with { json:api }
+* maintained by Larry Gebhardt
+* relies heavily on Active Record Models
 
 ^
-- you know what to expect, before writing a line of code
-
-^
-- brother of Dan Gebhardt - primary author & maintainer of { json:api }
-
-^
-- Active Record Models: functionalities/logic seems obvious/familiar
-- if you wanna use something else to hold your data (e.g. Elastic Search), you have to start overwriting things.
-
----
-## jsonapi-suite
-
-__A collection of ruby libraries that facilitate the jsonapi.org specification.__
-
-- __-__ serialiser and deserialiser for { json:api }
-- __-__ spec helpers
-- __-__ helpers for swagger documentation
-
----
-## Reference Implementations
-
-http://github.com/zfhui
-
+A collection of ruby libraries that facilitate the jsonapi.org specification.
+- serializer, deserializer
+- specs helpers
+- helpers for sweagger documentation
 
 ---
 [.autoscale: true]
@@ -1562,8 +1563,22 @@ http://github.com/zfhui
 
 - __Tests:__ [`jsonapi-rspec`](https://github.com/jsonapi-rb/jsonapi-rspec)
 - __Authorization:__ [`jsonapi-authorization`](https://github.com/venuu/jsonapi-authorization)
+
+<br/>
+
 - __Client:__ [`json-api-client`](https://github.com/JsonApiClient/json_api_client) / [`jsonapi-consumer`](https://github.com/jsmestad/jsonapi-consumer)
 
+<!-- ---
+[.autoscale: true]
+[.build-lists: false]
+## Reference Implementations
+
+- for [`jsonapi-resource`] (https://github.com/zfhui/json-api-talk-example-1-jsonapi-resources)
+- for [`jsonapi-suite`] (https://github.com/zfhui/json-api-talk-example-1-jsonapi-suite)
+
+^
+Based on the example use here in this talk!
+ -->
 ---
 [.autoscale: true]
 [.build-lists: false]
@@ -1571,6 +1586,7 @@ http://github.com/zfhui
 
 - __Talk__ [JSON API: convention driven API design](https://youtu.be/FpS_E90-6O8) by Steve Klabnik
 - __Talk__ [Past, Present and Future of JSON API](https://youtu.be/Foi54om6oGQ) by Steve Klabnik
+- __Talk__ [The Road to JSON API 1.0](https://www.infoq.com/presentations/json-api-1) by Steve Klabnik
 - __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
 - __Talk__ ["The JSON API Spec"](https://youtu.be/RSv-Yv3cgPg) by Marco Otto-Witte
 
@@ -1579,6 +1595,8 @@ http://github.com/zfhui
 - __Podcast__ ["Dan Gebhard - json-api, jsonapi-resources, orbit.js & Ember Data"](http://5by5.tv/rubyonrails/187) by Byle Daigle
 
 - __Podcast__ ["Data Loading Patterns with the JSON API with Balint Erdi"](https://frontsidethepodcast.simplecast.fm/65) by The Frontside Podcast
+
+- __Podcast__ ["JSON API and API Design"](https://changelog.com/podcast/189) by The Changelog
 
 - __Image__ [Devices](https://www.maplewoodlibrary.org/main/uploads/Digital-devices.jpg)
 
@@ -1885,12 +1903,12 @@ __{ json:api }__ is a wire protocol for incrementally fetching and updating a gr
 ---
 ## json:api vs GraphQL
 
-```
-GET /users/1` HTTP/1.1
+```http
+GET /users/1 HTTP/1.1
 Accept: application/vnd.api+json
 ```
 
-```
+```http
 HTTP/1.1 200 OK
 Content-Type: application/vnd.api+json
 ETag: "bf3291afe28105e12b9ff5941a3cf6d7"
@@ -1899,13 +1917,13 @@ ETag: "bf3291afe28105e12b9ff5941a3cf6d7"
 ---
 ## json:api vs GraphQL
 
-```
-GET /users/1` HTTP/1.1
+```http
+GET /users/1 HTTP/1.1
 Accept: application/vnd.api+json
 If-None-Match: "bf3291afe28105e12b9ff5941a3cf6d7"
 ```
 
-```
+```http
 HTTP/1.1 305 Not Modified
 ```
 
