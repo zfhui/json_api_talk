@@ -135,7 +135,6 @@ How __a client__ should request for resources to be fetched or modified.
 
 ---
 ## { json:api }
-### _Shared Conventions_
 
 How __a client__ should request for resources to be fetched or modified.
 How __a server__ should respond to those requests.
@@ -393,6 +392,34 @@ Content-Type: application/vnd.api+json,
 ```
 
 ---
+## Creating a User
+
+```http
+HTTP/1.1 201 Created
+Location: http://example.com/users/2
+Content-Type: application/vnd.api+json,
+```
+
+---
+## Creating a User
+
+```http
+HTTP/1.1 201 Created
+Location: http://example.com/users/2
+Content-Type: application/vnd.api+json,
+```
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Yehuda Katz" }
+  }
+}
+```
+
+---
 ## Updating a User
 
 `PATCH /users/2`
@@ -530,9 +557,6 @@ and we get this payload
 ## Relationships
 
 <br/>
-
-^
-- next thing I wanna show you is how on-to-many relationship looks like
 
 ---
 ## Relationships
