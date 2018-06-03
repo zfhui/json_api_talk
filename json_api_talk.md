@@ -18,11 +18,11 @@ build-lists: true
 - if you are using it, might be repetative -->
 
 ---
-![right](fei.jpg)
+<!-- ![right](fei.jpg) -->
 
-# [fit] _Zhuo-Fei Hui_
-# __@zfhui__
-# Blinkist
+### _Zhuo-Fei Hui_
+### __@zfhui__
+### Blinkist
 
 ^
 - Fei
@@ -31,31 +31,42 @@ build-lists: true
 - I currently work at Blinkist
 
 ---
-## Problem
+![](bikeshed.jpg)
+## Problem #1
 
 __RESTful APIs using JSON__
 
 ^
-- maintaining one or probably several APIs during our daily work
-- modern APIs are RESTful APIs sending JSON payloads
-- PROBLEM: This does not tell us about HOW to structure our APIs
+- I maintaine several APIs during my daily work,
+- I assume that this is what you do, too.
+- modern APIs are RESTful APIs using JSON
+- = we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
+- PROBLEM: This setup not tell us that much about HOW to design our APIs
+
+^
+- RESTful: Representational State Transfer
 
 ---
-## Problem
+![](bikeshed.jpg)
+## Problem #1
 
 __RESTful APIs using JSON__
 > We don't have a shared understanding about the structure.
 
 ^
 - If you give several individual developers the same data structure and some use cases and ask each of them to build an API, everyone will come back with a different solution.
-- It you put them then into the same room to discuss their solutions, they will tell you why prefer
+^
+- If you put them then into the same room to discuss their solutions, they will tell you why prefer
 - camel Case over snake case
 - plural / singular
 - endpoint design
 - resource nesting
 - filters, sorting params
+^
+- instead of concentrating on more crucial things (e.g. logic, architecture, performance)
+- we spent lots of time discussing the same questions over and over again
 
----
+<!-- ---
 ![](bikeshed.jpg)
 
 ## Problem
@@ -64,14 +75,14 @@ __Bikeshedding__
 > Futile investment of time and energy in discussion of marginal technical issues.
 -- Wiktionary
 
-^
-- instead of concentrating on more crucial things (e.g. logic, architecture, performance)
-- we spent lots of time discussing the same questions over and over again
+^ -->
 
 ---
-## Problem
+![](clients.jpg)
+## Problem #2
 
-Different clients prefer different structures.
+__Overloading__
+> Different clients prefer different structures.
 
 ^
 - iOS: good with fewer requests and large responses
@@ -79,6 +90,9 @@ Different clients prefer different structures.
 - When we start to cater for all of these needs
 - we often times overload the API, it grows and reflects less and less the underlying data structure
 - This is bad!
+
+^
+__You've probably experienced this already:__
 - one change in data structure -> bunch seemingly unrelated endpoints breaks
 - caching and invalidating cache becomes more complicated
 - clients get data, they don't need
@@ -89,9 +103,11 @@ Different clients prefer different structures.
 <br/>
 
 ## [fit] { json:api }
+## [fit] _A Specification for Building APIs in JSON_
 
 <br/>
 
+---
 <!-- ---
 ## Solution
 
@@ -99,15 +115,41 @@ Different clients prefer different structures.
 
 # [fit] { "json": "api" }
 
-<br/> -->
+<br/>
+
+--- -->
+## { json:api }
+### _Shared Conventions_
+
+<br/>
+
+^
+if you go to the website of the specification: ...
 
 ---
+## { json:api }
+### _Shared Conventions_
+
+How __a client__ should request for resources to be fetched or modified.
+
+---
+## { json:api }
+### _Shared Conventions_
+
+How __a client__ should request for resources to be fetched or modified.
+How __a server__ should respond to those requests.
+
+---
+<!-- ## jsonapi.org
+
+> By following __Shared Conventions__, you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application.
+
+--- -->
 [.autoscale: true]
-## History
+## jsonapi.org
 
 - __2013-05-03__ Yehuda Katz released initial the draft
 - __2013-07-21__ media type _application/vnd.api+json_ registration with IANA completed
-- __2014-07-05__ `v1.0rc` released
 - __2015-05-29__ `v1.0stable` released
 - __Today__ `v1.1` still in draft
 
@@ -117,36 +159,6 @@ Different clients prefer different structures.
 - 3 yrs old specification
 - maintainers: Steve Klabnik / Yehuda Katz / Dan Gebhard
 
----
-## jsonapi.org
-### _A Specification for Building APIs in JSON_
-
-<br/>
-
-^
-URL
-
----
-## jsonapi.org
-### _A Specification for Building APIs in JSON_
-
-How __a client__ should request for resources to be fetched or modified.
-
----
-## jsonapi.org
-### _A Specification for Building APIs in JSON_
-
-How __a client__ should request for resources to be fetched or modified.
-How __a server__ should respond to those requests.
-
-<!-- ---
-## jsonapi.org
-
-> By following __Shared Conventions__, you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application.
-
-^
-- the promiss
- -->
 <!-- ---
 ## Header
 
@@ -354,7 +366,6 @@ optional
 `PATCH /users/2`
 
 ^
-- send PATCH to endpoint /users/2
 - and the information, with which we want to update the user
 
 ---
@@ -373,26 +384,7 @@ optional
 ```
 
 ^
-- looks almost extactly like creating a user
-- id, type and attributes
-
----
-## Updating a User
-
-`PATCH /users/2`
-
-```json, [.highlight: 3]
-{
-  "data": {
-    "id": "2",
-    "type": "users",
-    "attributes": { "name": "Dan Gebhardt" }
-  }
-}
-```
-
-^
-- the payload is hopefully something we are familiar by now
+- by now familiar with
 - id, type and attributes
 
 ---
@@ -419,7 +411,7 @@ optional
     {
       "id": "2",
       "type": "users",
-      "attributes": { "name": "Yehuda Katz" }
+      "attributes": { "name": "Dan Gebhardt" }
     }
   ]
 }
@@ -442,7 +434,7 @@ and we get this payload
     {
       "id": "2",
       "type": "users",
-      "attributes": { "name": "Yehuda Katz" }
+      "attributes": { "name": "Dan Gebhardt" }
     }
   ]
 }
@@ -466,7 +458,7 @@ and we get this payload
     {
       "id": "2",
       "type": "users",
-      "attributes": { "name": "Yehuda Katz" }
+      "attributes": { "name": "Dan Gebhardt" }
     }
   ]
 }
@@ -491,14 +483,11 @@ and we get this payload
     {
       "id": "2",
       "type": "users",
-      "attributes": { "name": "Yehuda Katz" }
+      "attributes": { "name": "Dan Gebhardt" }
     }
   ]
 }
 ```
-
-^
-- this is our 2nd user Yehuda Katz
 
 ---
 ## Deleting a User
@@ -515,6 +504,13 @@ We get a 204 back.
 
 ^
 - next thing I wanna show you is how on-to-many relationship looks like
+
+---
+## 1:n Relationship
+
+```ruby
+User(id: integer, name: string)
+```
 
 ---
 ## 1:n Relationship
@@ -683,79 +679,17 @@ Article(
 - be aware that we only get the article's id and type, no attributes!
 - if we are interested the attributes, we can GET each article respectively
 
----
-`GET /articles/2`
-
-```json
-{
-  "data": {
-    "id": "2",
-    "type": "articles",
-    "attributes": {
-      "title": "Intro to JSON API",
-      "content": "Lorem opossum ..."
-    },
-    "relationships": {
-      "user": {
-        "data": { "id": "1", "type": "users" }
-      }
-    }
-  }
-}
-```
----
-`GET /articles/2`
-
-```json, [.highlight: 5-8]
-{
-  "data": {
-    "id": "2",
-    "type": "articles",
-    "attributes": {
-      "title": "Intro to JSON API",
-      "content": "Lorem opossum ..."
-    },
-    "relationships": {
-      "user": {
-        "data": { "id": "1", "type": "users" }
-      }
-    }
-  }
-}
-```
-
----
-`GET /articles/2`
-
-```json, [.highlight: 9-13]
-{
-  "data": {
-    "id": "2",
-    "type": "articles",
-    "attributes": {
-      "title": "Intro to JSON API",
-      "content": "Lorem opossum ..."
-    },
-    "relationships": {
-      "user": {
-        "data": { "id": "1", "type": "users" }
-      }
-    }
-  }
-}
-```
-
 <!-- ---
-`GET /articles/5`
+`GET /articles/2`
 
 ```json
 {
   "data": {
-    "id": "5",
+    "id": "2",
     "type": "articles",
     "attributes": {
-      "title": "Anti-Bikeshedding",
-      "content": "Marsupial fur trees ..."
+      "title": "Intro to JSON API",
+      "content": "Lorem opossum ..."
     },
     "relationships": {
       "user": {
@@ -765,18 +699,17 @@ Article(
   }
 }
 ```
-
 ---
-`GET /articles/5`
+`GET /articles/2`
 
 ```json, [.highlight: 5-8]
 {
   "data": {
-    "id": "5",
+    "id": "2",
     "type": "articles",
     "attributes": {
-      "title": "Anti-Bikeshedding",
-      "content": "Marsupial fur trees ..."
+      "title": "Intro to JSON API",
+      "content": "Lorem opossum ..."
     },
     "relationships": {
       "user": {
@@ -786,17 +719,18 @@ Article(
   }
 }
 ```
+
 ---
-`GET /articles/5`
+`GET /articles/2`
 
 ```json, [.highlight: 9-13]
 {
   "data": {
-    "id": "5",
+    "id": "2",
     "type": "articles",
     "attributes": {
-      "title": "Anti-Bikeshedding",
-      "content": "Marsupial fur trees ..."
+      "title": "Intro to JSON API",
+      "content": "Lorem opossum ..."
     },
     "relationships": {
       "user": {
@@ -808,18 +742,69 @@ Article(
 ``` -->
 
 ---
-[.autoscale: true]
-## Compound Documents
+## <br/>
 
-- __Instead of 3 requests:__
-- `GET /users/1`
-- `GET /articles/2` __and__ `GET /articles/5`
-- __We can do 1 request:__
-- `GET /users/1?include=articles`
+__3 requests__  | <br/>
+----------------|----------------------------------
+GET /users/1    |
+                |
+GET /articles/2 |
+GET /articles/5 |
+                |
+                |
+
+---
+## <br/>
+
+__n+1 requests__ | <br/>
+-----------------|----------------------------------
+GET /users/1     |
+                 |
+GET /articles/2  |
+GET /articles/5  |
+...              |
+                 |
+
 
 ^
-- remember what I told you at the beginning about the different preferences of iOS and Android client?
-- to reduce number of requests
+Remember what I told you at the beginning about the different preferences of iOS and Android client?
+
+
+---
+## <br/>
+
+__n+1 requests__ | __1 request__
+-----------------|----------------------------------
+GET /users/1     |
+                 |
+GET /articles/2  |
+GET /articles/5  |
+...              |
+                 |
+
+---
+## <br/>
+
+__n+1 requests__ | __1 request__
+-----------------|----------------------------------
+GET /users/1     | GET /users/1_?include=articles_
+                 |
+GET /articles/2  |
+GET /articles/5  |
+...              |
+                 |
+
+---
+## Compound Documents
+
+__n+1 requests__ | __1 request__
+-----------------|----------------------------------
+GET /users/1     | GET /users/1_?include=articles_
+                 |
+GET /articles/2  |
+GET /articles/5  |
+...              |
+                 |
 
 ---
 `GET /users/1?include=articles`
@@ -858,7 +843,7 @@ Article(
 - don't worry, this is the most complex response we are going to get into today!
 
 ---
-`GET /users/1?include=articles`
+`GET /users/1`
 
 ```json, [.highlight: 2-13]
 {
@@ -1178,11 +1163,10 @@ Article(
 ---
 ## ☝️ Updating a User with Relationships
 
-`PUT /users/1`
+`PATCH /users/1`
 
 ---
-
-☝️ `PUT /users/1`
+☝️ `PATCH /users/1`
 
 ```json, [.highlight: 6-13]
 {
@@ -1205,8 +1189,30 @@ Article(
 "relationships" field replaces relationships completely!
 
 ---
+☝️ `PATCH /users/1`
 
-☝️ `PUT /users/1`
+```json, [.highlight: 9-10]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Dan Gebhardt" },
+    "relationships": {
+      "articles": {
+        "data": [
+          { "id": "3", "type": "articles" },
+          { "id": "6", "type": "articles" }
+        ]
+      }
+    }
+  }
+}
+```
+^
+"relationships" field replaces relationships completely!
+
+---
+☝️ `PATCH /users/1`
 
 ```json, [.highlight: 6-13]
 {
@@ -1227,8 +1233,29 @@ Article(
 Empties all relationships to articles.
 
 ---
+☝️ `PATCH /users/1`
 
-`PUT /users/1`
+```json, [.highlight: 8]
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Dan Gebhardt" },
+    "relationships": {
+      "articles": {
+        "data": []
+      }
+    }
+  }
+}
+```
+
+^
+Empties all relationships to articles.
+
+<!-- ---
+
+`PATCH /users/1`
 
 ```json
 {
@@ -1241,7 +1268,7 @@ Empties all relationships to articles.
 ```
 
 ---
-<!-- ## Updating To-One Relationship
+## Updating To-One Relationship
 
 `PUT /articles/5/relationships/user`
 
@@ -1378,11 +1405,26 @@ HTTP/1.1 403 Forbidden
   ]
 }
 ```
+-->
 
---- -->
-## Manipulating relationships
+---
+## Manipulating a User's Relationships
 
-Use __POST__ and __DELETE__!
+<br/>
+
+---
+## Manipulating a User's Relationships
+
+ __POST__ and __DELETE__ on relationship links:
+
+---
+## Manipulating a User's Relationships
+
+ __POST__ and __DELETE__ on relationship links:
+
+</br>
+
+`/users/1/relationships/articles`
 
 ---
 ## Adding Relationships to a User
@@ -1407,6 +1449,19 @@ Use __POST__ and __DELETE__!
 }
 ```
 
+^
+you don't replace existing relationships!
+
+---
+## Deleting a User's Relationships
+
+<br/>
+
+---
+## Deleting a User's Relationships
+
+`DELETE /users/1/relationships/articles`
+
 ---
 ## Deleting a User's Relationships
 
@@ -1430,26 +1485,26 @@ You've earned yourself a small break!
 
 ---
 [.autoscale: true]
-## Things we didn't discuss
+## More Things ...
 
-* __-__ error objects, meta objects, links objects
-* __-__ n:m relationships
+* __-__ meta objects, links objects
 * __-__ pagination, sorting, filtering, sparse fieldset
+* __-__ error objects
+* __-__ n:m relationships
 * __-__ does not support creating nested resources
 
 ^
-- but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
-
-^
+- links object, allows you to write hypermedia APIs with JSON API
+- nested resources: but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
 
 ---
 [.autoscale: true]
-## To summarise ...
+## To Summarise ...
 
 - __-__ ultimate anti-bikeshedding tool
 - __-__ one endpoint to serve different client needs
-- __-__ tight coupling between the data and underlying data structure
-- __-__ leverages HTTP content negotiation mechanism
+- __-__ tight coupling between your API and the underlying data structure
+- 🍰 leverages HTTP content negotiation mechanism
 
 ^
 - let the client choose the granularity & how
@@ -1460,19 +1515,76 @@ You've earned yourself a small break!
 
 ---
 [.autoscale: true]
-## [fit] __Implementation__ _with_ JSONAPI::Resources
+### Where to go from here?
+
+- __gems codifying { json:api }__
+  - 👀 [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
+  - 👀 [`fast_jsonapi`](https://github.com/Netflix/fast_jsonapi)
+  - 💓 [`jsonapi_resources`](http://jsonapi-resources.com/)
+  - 🦄 [`jsonapi_suite`](https://jsonapi-suite.org)
+
+---
+[.autoscale: true]
+## jsonapi-resources
 
 * __-__ most compliant with { json:api }
 * __-__ maintained by Larry Gebhardt
 * __-__ relies heavily on Active Record Models
-* __-__ currently at `v0.9` and `v0.10beta`
+
+^
+- you know what to expect, before writing a line of code
 
 ^
 - brother of Dan Gebhardt - primary author & maintainer of { json:api }
+
+^
 - Active Record Models: functionalities/logic seems obvious/familiar
-- but at the same time inflexible, lots of overwriting
-- you know what to expect, before writing a line of code
-- the clients can already start mocking
+- if you wanna use something else to hold your data (e.g. Elastic Search), you have to start overwriting things.
+
+---
+## jsonapi-suite
+
+__A collection of ruby libraries that facilitate the jsonapi.org specification.__
+
+- __-__ serialiser and deserialiser for { json:api }
+- __-__ spec helpers
+- __-__ helpers for swagger documentation
+
+---
+## Reference Implementations
+
+http://github.com/zfhui
+
+
+---
+[.autoscale: true]
+## Where to go from here?
+
+- __Tests:__ [`jsonapi-rspec`](https://github.com/jsonapi-rb/jsonapi-rspec)
+- __Authorization:__ [`jsonapi-authorization`](https://github.com/venuu/jsonapi-authorization)
+- __Client:__ [`json-api-client`](https://github.com/JsonApiClient/json_api_client) / [`jsonapi-consumer`](https://github.com/jsmestad/jsonapi-consumer)
+
+---
+[.autoscale: true]
+[.build-lists: false]
+## References
+
+- __Talk__ [JSON API: convention driven API design](https://youtu.be/FpS_E90-6O8) by Steve Klabnik
+- __Talk__ [Past, Present and Future of JSON API](https://youtu.be/Foi54om6oGQ) by Steve Klabnik
+- __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
+- __Talk__ ["The JSON API Spec"](https://youtu.be/RSv-Yv3cgPg) by Marco Otto-Witte
+
+- __Talk__ ["Pragmatic JSON API Design"](https://www.youtube.com/watch?v=3jBJOga4e2Y&index=4&list=PLNLa8ejyRhUt3TjSjvr2T4rE1kGbIfJc1&t=0s) by Jeremiah Lee
+
+- __Podcast__ ["Dan Gebhard - json-api, jsonapi-resources, orbit.js & Ember Data"](http://5by5.tv/rubyonrails/187) by Byle Daigle
+
+- __Podcast__ ["Data Loading Patterns with the JSON API with Balint Erdi"](https://frontsidethepodcast.simplecast.fm/65) by The Frontside Podcast
+
+- __Image__ [Devices](https://www.maplewoodlibrary.org/main/uploads/Digital-devices.jpg)
+
+---
+![](hamster_party.gif)
+# Thanks__!__
 
 ---
 [.autoscale: true]
@@ -1617,6 +1729,36 @@ end
 ```
 
 ---
+```ruby
+# app/resources/user_resource.rb
+
+class UserResource < JSONAPI::Resource
+  attributes :name, :first_name, :last_name
+
+  has_many :articles, always_include_linkage_data: true
+
+  def name
+    "#{@model.first_name} #{@model.last_name}"
+  end
+
+  def fetchable_fields
+    %i(name articles)
+  end
+
+  def self.creatable_fields(_context)
+    %i(first_name last_name articles)
+  end
+
+  def self.updatable_fields(_context)
+    %i(first_name last_name articles)
+  end
+end
+```
+
+^
+Final version of UserResource
+
+---
 ## <br/>
 
 ```ruby
@@ -1719,74 +1861,6 @@ class ArticlesController < ApplicationController; end
 ![filter](hamster_party.gif)
 ## [fit] You've just created a JSON API_!_
 <br/>
-
----
-[.autoscale: true]
-## Where to go from here?
-
-- __Only Readable API__: [`fast_jsonapi`](https://github.com/Netflix/fast_jsonapi) /  [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
-- __Tests:__ [`jsonapi-rspec`](https://github.com/jsonapi-rb/jsonapi-rspec)
-- __Authorization:__ [`jsonapi-authorization`](https://github.com/venuu/jsonapi-authorization)
-- __Client:__ [`json-api-client`](https://github.com/JsonApiClient/json_api_client) / [`jsonapi-consumer`](https://github.com/jsmestad/jsonapi-consumer)
-
----
-
-## jsonapi-suite.org
-
-__A collection of ruby libraries that facilitate the jsonapi.org specification.__
-
-- __-__ serialiser and deserialiser for { json:api }
-- __-__ spec helpers
-- __-__ helpers for swagger documentation
-
----
-[.autoscale: true]
-## References
-
-- __Talk__ [JSON API: convention driven API design](https://youtu.be/FpS_E90-6O8) by Steve Klabnik
-- __Talk__ [Past, Present and Future of JSON API](https://youtu.be/Foi54om6oGQ) by Steve Klabnik
-- __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
-- __Talk__ ["The JSON API Spec"](https://youtu.be/RSv-Yv3cgPg) by Marco Otto-Witte
-
-- __Talk__ ["Pragmatic JSON API Design"](https://www.youtube.com/watch?v=3jBJOga4e2Y&index=4&list=PLNLa8ejyRhUt3TjSjvr2T4rE1kGbIfJc1&t=0s) by Jeremiah Lee
-
-- __Podcast__ ["Dan Gebhard - json-api, jsonapi-resources, orbit.js & Ember Data"](http://5by5.tv/rubyonrails/187) by Byle Daigle
-
-- __Podcast__ ["Data Loading Patterns with the JSON API with Balint Erdi"](https://frontsidethepodcast.simplecast.fm/65) by The Frontside Podcast
-
----
-
-# Thanks_!_
-
----
-```ruby
-# app/resources/user_resource.rb
-
-class UserResource < JSONAPI::Resource
-  attributes :name, :first_name, :last_name
-
-  has_many :articles, always_include_linkage_data: true
-
-  def name
-    "#{@model.first_name} #{@model.last_name}"
-  end
-
-  def fetchable_fields
-    %i(name articles)
-  end
-
-  def self.creatable_fields(_context)
-    %i(first_name last_name articles)
-  end
-
-  def self.updatable_fields(_context)
-    %i(first_name last_name articles)
-  end
-end
-```
-
-^
-Final version of UserResource
 
 ---
 ## Yehuda Katz
