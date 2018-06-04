@@ -17,8 +17,9 @@ build-lists: true
 - this talk was meant as an internal talk
 - if you are using it, might be repetative -->
 
----
+<!-- --- -->
 <!-- ![right](fei.jpg) -->
+<!--
 ### _Zhuo-Fei Hui_
 ### __@zfhui__
 ### Blinkist
@@ -28,12 +29,17 @@ build-lists: true
 - China /  Germany
 - Came to Berlin study CS at TU Berlin
 - I currently work at Blinkist at a backend developer
+ -->
+
+---
+
+![](hamster_monster.gif)
 
 ---
 ![](bikeshed.jpg)
 ## Problem #1
 
-__RESTful APIs using JSON__
+__Bikeshedding__
 
 ^
 - I maintaine several APIs during my daily work,
@@ -49,7 +55,7 @@ __RESTful APIs using JSON__
 ![](bikeshed.jpg)
 ## Problem #1
 
-__RESTful APIs using JSON__
+__Bikeshedding__
 > We don't have a shared understanding about the structure.
 
 ^
@@ -1518,7 +1524,7 @@ you don't replace existing relationships!
 }
 ```
 
----
+<!-- ---
 ![](hamster_monster.gif)
 
 ^
@@ -1527,8 +1533,8 @@ You've earned yourself a small break!
 
 ^
 Drink some water!
-
-<!-- ---
+ -->
+---
 ![](hamster_band.gif)
 
 ^
@@ -1536,7 +1542,7 @@ That was a lot!
 You've earned yourself a small break!
 
 ^
-Drink some water! -->
+Drink some water!
 
 ---
 [.autoscale: true]
