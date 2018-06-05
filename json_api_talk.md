@@ -17,9 +17,9 @@ build-lists: true
 - this talk was meant as an internal talk
 - if you are using it, might be repetative -->
 
-<!-- --- -->
+---
 <!-- ![right](fei.jpg) -->
-<!--
+
 ### _Zhuo-Fei Hui_
 ### __@zfhui__
 ### Blinkist
@@ -29,11 +29,16 @@ build-lists: true
 - China /  Germany
 - Came to Berlin study CS at TU Berlin
 - I currently work at Blinkist at a backend developer
- -->
 
 ---
-
+<!--
 ![](hamster_monster.gif)
+
+--- -->
+![](bikeshed.jpg)
+## Problem #1
+
+<br/>
 
 ---
 ![](bikeshed.jpg)
@@ -1523,17 +1528,6 @@ you don't replace existing relationships!
   ]
 }
 ```
-
-<!-- ---
-![](hamster_monster.gif)
-
-^
-That was a lot!
-You've earned yourself a small break!
-
-^
-Drink some water!
- -->
 ---
 ![](hamster_band.gif)
 
@@ -1546,37 +1540,22 @@ Drink some water!
 
 ---
 [.autoscale: true]
-## More Things ...
+## There is More ...
 
 * __-__ meta objects, links objects
-* __-__ pagination, sorting, filtering, sparse fieldset
+* __-__ pagination, sorting, filtering, sparse fieldsets
 * __-__ error objects
 * __-__ n:m relationships
 * __-__ does not support creating nested resources
 
 ^
+- this was a intro to the core subset of JSON API
 - links object, allows you to write hypermedia APIs with JSON API
 - nested resources: but [will be supported in the future](https://github.com/json-api/json-api/issues/795)
 
 ---
 [.autoscale: true]
-## To Summarise ...
-
-- __-__ ultimate anti-bikeshedding tool
-- __-__ one endpoint to serve different client needs
-- __-__ tight coupling between your API and the underlying data structure
-- 🍰 leverages HTTP content negotiation mechanism
-
-^
-- let the client choose the granularity & how
-- one endpoint: without overloading it
-- reflects the underlying data structure, instead of being loosely related or even arbitrarily merged
-- well-defined resources can improve cacheability
-- HTTP: caching mechanism
-
----
-[.autoscale: true]
-### Where to go from here?
+## Tooling
 
 - __gems codifying { json:api }__
   - 👀 [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
@@ -1592,20 +1571,34 @@ jsonapi-resources:
 
 ^
 A collection of ruby libraries that facilitate the jsonapi.org specification.
-- serializer, deserializer
-- specs helpers
-- helpers for sweagger documentation
+* serializer, deserializer
+* specs helpers
+* helpers for swagger documentation
+
+^
+* rspec helpers
+* authorization
+* gems for client implementation
+
+---
+![50%](tooling.png)
 
 ---
 [.autoscale: true]
-## Where to go from here?
+## To Summarise ...
 
-- __Tests:__ [`jsonapi-rspec`](https://github.com/jsonapi-rb/jsonapi-rspec)
-- __Authorization:__ [`jsonapi-authorization`](https://github.com/venuu/jsonapi-authorization)
+- __-__ anti-bikeshedding
+- __-__ one endpoint to serve different client needs
+- __-__ tight coupling between API and underlying data structure
+- __-__ community and tooling support
+- 🍰 leverages HTTP content negotiation mechanism
 
-<br/>
-
-- __Client:__ [`json-api-client`](https://github.com/JsonApiClient/json_api_client) / [`jsonapi-consumer`](https://github.com/jsmestad/jsonapi-consumer)
+^
+- let the client choose the granularity & how
+- one endpoint: without overloading it
+- reflects the underlying data structure, instead of being loosely related or even arbitrarily merged
+- well-defined resources can improve cache-ability
+- HTTP: caching mechanism
 
 <!-- ---
 [.autoscale: true]
@@ -1642,6 +1635,10 @@ Based on the example use here in this talk!
 ---
 ![](hamster_party.gif)
 # Thanks__!__
+
+---
+
+# Questions__?__
 
 ---
 [.autoscale: true]
