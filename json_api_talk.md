@@ -1528,8 +1528,6 @@ you don't replace existing relationships!
   ]
 }
 ```
----
-![](hamster_band.gif)
 
 ^
 That was a lot!
@@ -1537,6 +1535,9 @@ You've earned yourself a small break!
 
 ^
 Drink some water!
+
+---
+![](hamster_band.gif)
 
 ---
 [.autoscale: true]
