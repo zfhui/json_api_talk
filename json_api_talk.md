@@ -17,9 +17,9 @@ build-lists: true
 - this talk was meant as an internal talk
 - if you are using it, might be repetative -->
 
----
+<!-- --- -->
 <!-- ![right](fei.jpg) -->
-
+<!--
 ### _Zhuo-Fei Hui_
 ### __@zfhui__
 ### Blinkist
@@ -29,12 +29,17 @@ build-lists: true
 - China /  Germany
 - Came to Berlin study CS at TU Berlin
 - I currently work at Blinkist at a backend developer
+ -->
+
+---
+
+![](hamster_monster.gif)
 
 ---
 ![](bikeshed.jpg)
 ## Problem #1
 
-__RESTful APIs using JSON__
+__Bikeshedding__
 
 ^
 - I maintaine several APIs during my daily work,
@@ -50,7 +55,7 @@ __RESTful APIs using JSON__
 ![](bikeshed.jpg)
 ## Problem #1
 
-__RESTful APIs using JSON__
+__Bikeshedding__
 > We don't have a shared understanding about the structure.
 
 ^
@@ -135,7 +140,6 @@ How __a client__ should request for resources to be fetched or modified.
 
 ---
 ## { json:api }
-### _Shared Conventions_
 
 How __a client__ should request for resources to be fetched or modified.
 How __a server__ should respond to those requests.
@@ -393,6 +397,34 @@ Content-Type: application/vnd.api+json,
 ```
 
 ---
+## Creating a User
+
+```http
+HTTP/1.1 201 Created
+Location: http://example.com/users/2
+Content-Type: application/vnd.api+json,
+```
+
+---
+## Creating a User
+
+```http
+HTTP/1.1 201 Created
+Location: http://example.com/users/2
+Content-Type: application/vnd.api+json,
+```
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "users",
+    "attributes": { "name": "Yehuda Katz" }
+  }
+}
+```
+
+---
 ## Updating a User
 
 `PATCH /users/2`
@@ -530,9 +562,6 @@ and we get this payload
 ## Relationships
 
 <br/>
-
-^
-- next thing I wanna show you is how on-to-many relationship looks like
 
 ---
 ## Relationships
@@ -1495,13 +1524,23 @@ you don't replace existing relationships!
 }
 ```
 
----
+<!-- ---
+![](hamster_monster.gif)
 
+^
+That was a lot!
+You've earned yourself a small break!
+
+^
+Drink some water!
+ -->
+---
 ![](hamster_band.gif)
 
 ^
 That was a lot!
 You've earned yourself a small break!
+
 ^
 Drink some water!
 
