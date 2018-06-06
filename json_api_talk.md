@@ -1582,7 +1582,7 @@ A collection of ruby libraries that facilitate the jsonapi.org specification.
 * gems for client implementation
 
 ---
-![50%](tooling.png)
+![](tooling.gif)
 
 ---
 [.autoscale: true]
