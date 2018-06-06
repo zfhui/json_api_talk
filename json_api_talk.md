@@ -35,33 +35,30 @@ build-lists: true
 ![](hamster_monster.gif)
 
 --- -->
-![](bikeshed.jpg)
-## Problem #1
-
-<br/>
-
----
-![](bikeshed.jpg)
-## Problem #1
-
-__Bikeshedding__
+## RESTful APIs using JSON
+> This __does not__ tell us about __how__ to design our APIs.
 
 ^
-- I maintaine several APIs during my daily work,
-- I assume that's something most of you do too.
 - modern APIs are RESTful APIs using JSON
 - = we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
 - PROBLEM: This setup not tell us that much about HOW to design our APIs
 
+---
+![](bikeshed.jpg)
+## Problem #1
+
+__Bikeshedding__
+
 ^
-- RESTful: Representational State Transfer
+- anecdote
 
 ---
 ![](bikeshed.jpg)
 ## Problem #1
 
 __Bikeshedding__
-> We don't have a shared understanding about the structure.
+> Futile investment of time and energy in discussion of marginal technical issues.
+-- Wiktionary
 
 ^
 When we start building a new API, we discuss a bunch of things:
@@ -851,7 +848,8 @@ GET /articles/5  |
                  |
 
 ---
-`GET /users/1?include=articles`
+[.autoscale: true]
+`GET /users/1`_?include=articles_
 
 ```json
 {
@@ -887,6 +885,7 @@ GET /articles/5  |
 - don't worry, this is the most complex response we are going to get into today!
 
 ---
+[.autoscale: true]
 `GET /users/1`
 
 ```json, [.highlight: 2-13]
@@ -920,7 +919,8 @@ GET /articles/5  |
 ```
 
 ---
-`GET /users/1?include=articles`
+[.autoscale: true]
+`GET /users/1`_?include=articles_
 
 ```json, [.highlight: 14-25]
 {
@@ -953,7 +953,8 @@ GET /articles/5  |
 ```
 
 ---
-`GET /users/1?include=articles`
+[.autoscale: true]
+`GET /users/1`_?include=articles_
 
 ```json, [.highlight: 14, 25]
 {
@@ -986,7 +987,8 @@ GET /articles/5  |
 ```
 
 ---
-`GET /users/1?include=articles`
+[.autoscale: true]
+`GET /users/1`_?include=articles_
 
 ```json, [.highlight: 15-19]
 {
@@ -1019,7 +1021,8 @@ GET /articles/5  |
 ```
 
 ---
-`GET /users/1?include=articles`
+[.autoscale: true]
+`GET /users/1`_?include=articles_
 
 ```json, [.highlight: 20-24]
 {
@@ -1052,7 +1055,8 @@ GET /articles/5  |
 ```
 
 ---
-`GET /users/1?include=articles`
+[.autoscale: true]
+`GET /users/1`_?include=articles_
 
 ```json, [.highlight: 18, 23]
 {
@@ -1089,7 +1093,8 @@ GET /articles/5  |
 - JSON API allows you to only include titles
 
 ---
-`GET /users/1?include=articles.title`
+[.autoscale: true]
+`GET /users/1`_?include=articles___&fields[articles]=title__
 
 ```json, [.highlight: 18, 23]
 {
@@ -1121,7 +1126,8 @@ GET /articles/5  |
 }
 ```
 ---
-`GET /users/1?include=articles.title`
+[.autoscale: true]
+`GET /users/1`_?include=articles___&fields[articles]=title__
 
 ```json, [.highlight: 18, 23]
 {
@@ -1141,20 +1147,17 @@ GET /articles/5  |
       {
         "id": "2",
         "type": "articles",
-        "attributes": { "title": "Intro to JSON API" }
+        "attributes": { "title": "Intro to JSON API"                                 }
       },
       {
         "id": "5",
         "type": "articles",
-        "attributes": { "title": "Anti-Bikeshedding" }
+        "attributes": { "title": "Anti-Bikeshedding"                                       }
       }
     ]
   }
 }
 ```
-
-^
-Skipping the POST request, because looks similar to Updating.
 
 <!-- ## Creating a User with Relationships
 
@@ -1205,6 +1208,15 @@ Skipping the POST request, because looks similar to Updating.
 
 ^
 - ... by sending the relationship info along your POST request -->
+
+---
+[.autoscale: true]
+## Sparse Fieldsets
+
+## [fit] `GET /users/1?include=articles`__&fields[articles]=title__
+<br/>
+<br/>
+<br/>
 
 ---
 ## Updating a User with Relationships
@@ -1544,7 +1556,7 @@ Drink some water!
 ## There is More ...
 
 * __-__ meta objects, links objects
-* __-__ pagination, sorting, filtering, sparse fieldsets
+* __-__ pagination, sorting, filtering
 * __-__ error objects
 * __-__ n:m relationships
 * __-__ does not support creating nested resources
@@ -1576,13 +1588,13 @@ A collection of ruby libraries that facilitate the jsonapi.org specification.
 * specs helpers
 * helpers for swagger documentation
 
-^
-* rspec helpers
-* authorization
-* gems for client implementation
-
 ---
 ![](tooling.gif)
+
+^
+- go to the website
+- client and server libraries for all popular languages
+- tools for verifying your payload
 
 ---
 [.autoscale: true]
