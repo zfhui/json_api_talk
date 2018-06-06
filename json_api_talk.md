@@ -109,12 +109,9 @@ __You've probably experienced this already:__
 
 ---
 ## Solution
-
 <br/>
-
 ## [fit] { json:api }
 ## [fit] _A Specification for Building APIs in JSON_
-
 <br/>
 
 ---
@@ -1218,6 +1215,9 @@ GET /articles/5  |
 <br/>
 <br/>
 
+^
+allowing clients to specify only the properties they want from an object returned in the response
+
 ---
 ## Updating a User with Relationships
 
@@ -1541,9 +1541,23 @@ you don't replace existing relationships!
 }
 ```
 
+---
+## Deleting a User's Relationships
+
+`DELETE /users/1/relationships/articles`
+
+```json, [.highlight: 3,4]
+{
+  "data": [
+    { "id": "3", "type": "articles" },
+    { "id": "7", "type": "articles" }
+  ]
+}
+```
+
 ^
 That was a lot!
-You've earned yourself a small break!
+Before we go into the conclusion, I'll give you a small break!
 
 ^
 Drink some water!
@@ -1629,29 +1643,22 @@ Based on the example use here in this talk!
 [.build-lists: false]
 ## References
 
+- __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
 - __Talk__ [JSON API: convention driven API design](https://youtu.be/FpS_E90-6O8) by Steve Klabnik
 - __Talk__ [Past, Present and Future of JSON API](https://youtu.be/Foi54om6oGQ) by Steve Klabnik
 - __Talk__ [The Road to JSON API 1.0](https://www.infoq.com/presentations/json-api-1) by Steve Klabnik
-- __Website__ [Media Type Specs](https://www.iana.org/assignments/media-types/application/vnd.api+json)
 - __Talk__ ["The JSON API Spec"](https://youtu.be/RSv-Yv3cgPg) by Marco Otto-Witte
-
 - __Talk__ ["Pragmatic JSON API Design"](https://www.youtube.com/watch?v=3jBJOga4e2Y&index=4&list=PLNLa8ejyRhUt3TjSjvr2T4rE1kGbIfJc1&t=0s) by Jeremiah Lee
-
 - __Podcast__ ["Dan Gebhard - json-api, jsonapi-resources, orbit.js & Ember Data"](http://5by5.tv/rubyonrails/187) by Byle Daigle
-
 - __Podcast__ ["Data Loading Patterns with the JSON API with Balint Erdi"](https://frontsidethepodcast.simplecast.fm/65) by The Frontside Podcast
-
 - __Podcast__ ["JSON API and API Design"](https://changelog.com/podcast/189) by The Changelog
+- __Images__ [Bikeshed](https://cate.blog/2014/08/06/bikeshedding/), [Devices](https://www.maplewoodlibrary.org/main/uploads/Digital-devices.jpg), [Hamster Band](giphy.com)[Confetti](https://www.etsy.com/au/listing/468687651/biodegradable-rainbow-confetti-dots)
 
-- __Image__ [Devices](https://www.maplewoodlibrary.org/main/uploads/Digital-devices.jpg)
-
+<!-- ---
+![](hamster_party.gif) -->
 ---
-![](hamster_party.gif)
+![](confetti.jpg)
 # Thanks__!__
-
----
-
-# Questions__?__
 
 ---
 [.autoscale: true]
