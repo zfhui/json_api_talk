@@ -8,6 +8,14 @@ build-lists: true
 # [fit] _An Introduction to_
 # [fit] { json:api }
 
+^
+- Greeting!
+- this presentatop aims:
+  - main motivation
+  - show you some of the core features
+- courious about learning more about it, afterwards
+- maybe even want to use it for your next project
+
 <!-- ^
 - Greeting!
 - idea of this talk came to me while I was working on a project at my previous company DaWanda
@@ -25,10 +33,26 @@ build-lists: true
 ### Blinkist
 
 ^
-- Fei
-- China /  Germany
-- Came to Berlin study CS at TU Berlin
-- I currently work at Blinkist at a backend developer
+- Name
+- China/Germany
+- Berlin - Computer Science (TU)
+- Backend Dev
+
+<!-- ## Intro
+
+^
+- >6 months ago, working at DaWanda, assigned on a new project
+- to build a micro service using JSON API
+
+^
+- none of us had that much experience
+- I decided to make a series of internal talks about JSON API to share my learnings with my colleagues
+- the best way to learn smth is to explain it to other people
+
+^
+- fast forward 6 months, I work at Blinkist now
+- all of my new colleagues are very experienced with JSON API
+- I have to catch up! More motivation! -->
 
 ---
 <!--
@@ -36,12 +60,21 @@ build-lists: true
 
 --- -->
 ## RESTful APIs using JSON
+
+<br/>
+
+^
+- I maintain several APIs, are all RESTful API's using JSON
+- modern APIs are RESTful APIs using JSON
+- we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
+
+---
+## RESTful APIs using JSON
 > This __does not__ tell us about __how__ to design our APIs.
 
 ^
-- modern APIs are RESTful APIs using JSON
-- = we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
-- PROBLEM: This setup not tell us that much about HOW to design our APIs
+- This setup not tell us that much about HOW to design our APIs
+- So when building or maintaining an API we face a bunch of questions and issues.
 
 ---
 ![](bikeshed.jpg)
@@ -50,7 +83,10 @@ build-lists: true
 __Bikeshedding__
 
 ^
-- anecdote
+- term coined by some one
+- made following observation
+- normal human behaviour
+- faced with a bunch with questions + problems, focus on easy to understand, easier to have an opinion about
 
 ---
 ![](bikeshed.jpg)
@@ -114,6 +150,9 @@ __You've probably experienced this already:__
 ## [fit] _A Specification for Building APIs in JSON_
 <br/>
 
+^
+the can be your tool to solve those two problems
+
 ---
 <!-- ---
 ## Solution
@@ -125,7 +164,7 @@ __You've probably experienced this already:__
 <br/>
 
 --- -->
-## { json:api }
+## jsonapi.org
 
 <br/>
 
@@ -133,15 +172,19 @@ __You've probably experienced this already:__
 if you go to the website of the specification: ...
 
 ---
-## { json:api }
+## jsonapi.org
 
 How __a client__ should request for resources to be fetched or modified.
 
 ---
-## { json:api }
+## jsonapi.org
 
 How __a client__ should request for resources to be fetched or modified.
 How __a server__ should respond to those requests.
+
+^
+We will have a look at what this means in a second...
+-> History
 
 ---
 <!-- ## jsonapi.org
@@ -150,7 +193,7 @@ How __a server__ should respond to those requests.
 
 --- -->
 [.autoscale: true]
-## { json:api }
+## History
 
 - __2013-05-03__ Yehuda Katz released initial the draft
 - __2013-07-21__ registration of the media type: _application/vnd.api+json_
@@ -1933,7 +1976,7 @@ class ArticlesController < ApplicationController; end
 
 ---
 ![filter](hamster_party.gif)
-## [fit] You've just created a JSON API_!_
+## [fit] You've just created a JSON API__!__
 <br/>
 
 ---
