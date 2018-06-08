@@ -459,7 +459,7 @@ Content-Type: application/vnd.api+json,
 ```json
 {
   "data": {
-    "id": "1",
+    "id": "2",
     "type": "users",
     "attributes": { "name": "Yehuda Katz" }
   }
