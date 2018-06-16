@@ -26,11 +26,11 @@ build-lists: true
 - if you are using it, might be repetative -->
 
 ---
-<!-- ![right](fei.jpg) -->
+![right, 150%](twitter_qr.png)
 
-### _Zhuo-Fei Hui_
-### __@zfhui__
-### Blinkist
+# [fit] _Zhuo-Fei Hui_
+# __@zfhui__
+# Blinkist
 
 ^
 - Name
