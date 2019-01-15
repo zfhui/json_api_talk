@@ -1631,6 +1631,7 @@ Drink some water!
   - 👀 [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
   - 👀 [`fast_jsonapi`](https://github.com/Netflix/fast_jsonapi)
   - 💓 [`jsonapi_resources`](http://jsonapi-resources.com/)
+  - 📲 [`json_api_client`](https://github.com/JsonApiClient/json_api_client)
   - 🦄 [`jsonapi_suite`](https://jsonapi-suite.org)
 
 ^
@@ -1644,6 +1645,13 @@ A collection of ruby libraries that facilitate the jsonapi.org specification.
 * serializer, deserializer
 * specs helpers
 * helpers for swagger documentation
+
+---
+## { json:api } @Blinkist
+
+* __Server side__: `active_model_serializers`, [see this example PR](https://github.com/blinkist/blinkist-content-interaction/pull/6/files)
+
+* __Client side__: [`blinkist-microservice-client`](https://github.com/blinkist/blinkist-microservice-client) (uses `json_api_client` under the hood)
 
 ---
 ![](tooling.gif)
