@@ -64,7 +64,7 @@ build-lists: true
 <br/>
 
 ^
-- I maintain several APIs, are all RESTful API's using JSON
+- I maintain several APIs
 - modern APIs are RESTful APIs using JSON
 - we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
 
@@ -84,7 +84,7 @@ __Bikeshedding__
 
 ^
 - term coined by some one
-- made following observation
+- made following observation ...
 - normal human behaviour
 - faced with a bunch with questions + problems, focus on easy to understand, easier to have an opinion about
 
@@ -132,9 +132,10 @@ __Overloading__
 - then we have to adapt it for other clients
 - Android: several requests with small responses
 - iOS: good with fewer requests and large responses
+- mobile clients show less information than websites
 - When we start to cater for all of these needs
 - we often times also start to overload the endpoints
-- it grows and reflects less and less the underlying data structure
+- it grows and reflects less and less the underlying data structure (god endpoints)
 - This is bad!
 
 ^
