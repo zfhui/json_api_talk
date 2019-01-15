@@ -199,7 +199,7 @@ We will have a look at what this means in a second...
 - __2013-05-03__ Yehuda Katz released initial the draft
 - __2013-07-21__ registration of the media type: _application/vnd.api+json_
 - __2015-05-29__ `v1.0stable` released
-- __Today__ `v1.1` still in draft
+- __2018-12-01__ `v1.1rc` announced 🥳
 
 ^
 - Katz met Klabnik at the RailsConf
