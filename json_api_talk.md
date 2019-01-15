@@ -1647,19 +1647,21 @@ A collection of ruby libraries that facilitate the jsonapi.org specification.
 * helpers for swagger documentation
 
 ---
-## { json:api } @Blinkist
-
-* __Server side__: `active_model_serializers`, [see this example PR](https://github.com/blinkist/blinkist-content-interaction/pull/6/files)
-
-* __Client side__: [`blinkist-microservice-client`](https://github.com/blinkist/blinkist-microservice-client) (uses `json_api_client` under the hood)
-
----
 ![](tooling.gif)
 
 ^
 - go to the website
 - client and server libraries for all popular languages
 - tools for verifying your payload
+
+---
+## { json:api } @ Blinkist
+[.autoscale: true]
+* we use it for our *miro-services*
+
+* __Server side__: `active_model_serializers`, [see this example PR](https://github.com/blinkist/blinkist-content-interaction/pull/6/files)
+
+* __Client side__: [`blinkist-microservice-client`](https://github.com/blinkist/blinkist-microservice-client) (uses `json_api_client`)
 
 ---
 [.autoscale: true]
