@@ -64,7 +64,7 @@ build-lists: true
 <br/>
 
 ^
-- I maintain several APIs, are all RESTful API's using JSON
+- I maintain several APIs
 - modern APIs are RESTful APIs using JSON
 - we can use CRUD operations with JSON formed payloads to manipulate data, which are sitting behind some endpoints
 
@@ -84,7 +84,7 @@ __Bikeshedding__
 
 ^
 - term coined by some one
-- made following observation
+- made following observation ...
 - normal human behaviour
 - faced with a bunch with questions + problems, focus on easy to understand, easier to have an opinion about
 
@@ -132,9 +132,10 @@ __Overloading__
 - then we have to adapt it for other clients
 - Android: several requests with small responses
 - iOS: good with fewer requests and large responses
+- mobile clients show less information than websites
 - When we start to cater for all of these needs
 - we often times also start to overload the endpoints
-- it grows and reflects less and less the underlying data structure
+- it grows and reflects less and less the underlying data structure (god endpoints)
 - This is bad!
 
 ^
@@ -198,7 +199,7 @@ We will have a look at what this means in a second...
 - __2013-05-03__ Yehuda Katz released initial the draft
 - __2013-07-21__ registration of the media type: _application/vnd.api+json_
 - __2015-05-29__ `v1.0stable` released
-- __Today__ `v1.1` still in draft
+- __2018-12-01__ `v1.1rc` announced 🥳
 
 ^
 - Katz met Klabnik at the RailsConf
@@ -1631,6 +1632,7 @@ Drink some water!
   - 👀 [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
   - 👀 [`fast_jsonapi`](https://github.com/Netflix/fast_jsonapi)
   - 💓 [`jsonapi_resources`](http://jsonapi-resources.com/)
+  - 📲 [`json_api_client`](https://github.com/JsonApiClient/json_api_client)
   - 🦄 [`jsonapi_suite`](https://jsonapi-suite.org)
 
 ^
@@ -1652,6 +1654,15 @@ A collection of ruby libraries that facilitate the jsonapi.org specification.
 - go to the website
 - client and server libraries for all popular languages
 - tools for verifying your payload
+
+---
+## { json:api } @ Blinkist
+[.autoscale: true]
+* we use it for our *miro-services*
+
+* __Server side__: `active_model_serializers`, [see this example PR](https://github.com/blinkist/blinkist-content-interaction/pull/6/files)
+
+* __Client side__: [`blinkist-microservice-client`](https://github.com/blinkist/blinkist-microservice-client) (uses `json_api_client`)
 
 ---
 [.autoscale: true]
